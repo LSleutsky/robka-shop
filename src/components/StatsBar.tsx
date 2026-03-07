@@ -24,7 +24,7 @@ export default function StatsBar({ counts, filterStatus, hasRepairs, onFilterCha
               key={status}
               className={clsx(
                 'relative group p-4 text-left transition-all duration-300',
-                !hasRepairs && 'cursor-default',
+                !hasRepairs && '!cursor-default',
                 active ? 'bg-slate-800/50' : hasRepairs && 'hover:bg-slate-800/20',
                 index % 2 !== 0 && 'border-l border-slate-700/30',
                 index >= 2 && 'border-t border-slate-700/30 md:border-t-0',
