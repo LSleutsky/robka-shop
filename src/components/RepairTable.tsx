@@ -20,7 +20,7 @@ interface RepairTableProps {
 }
 
 const GRID_COLS =
-  'grid-cols-[3rem_minmax(5rem,1fr)_minmax(5rem,1fr)_minmax(6rem,1.5fr)_minmax(6rem,2fr)_minmax(6rem,2fr)_minmax(7rem,1.2fr)_5.5rem]';
+  'grid-cols-[3rem_minmax(5rem,1fr)_minmax(5rem,1fr)_minmax(6rem,1.5fr)_minmax(7rem,1.2fr)_minmax(6rem,2fr)_minmax(6rem,2fr)_minmax(7rem,1.2fr)_5.5rem]';
 
 const CELL = 'px-4 py-3.5 flex items-center justify-center text-center';
 const CELL_FIRST = 'px-2 py-3.5 flex items-center justify-center sticky left-0 z-10';
@@ -35,6 +35,7 @@ const HEADERS = [
   { label: 'Ticket', className: CELL },
   { label: 'Date', className: CELL },
   { label: 'Customer', className: CELL },
+  { label: 'Phone', className: CELL },
   { label: 'Items', className: CELL },
   { label: 'Specs', className: CELL },
   { label: 'Status', className: CELL }
@@ -121,9 +122,12 @@ export default function RepairTable({
                     {formatDate(repair.date)}
                   </div>
                   <div className={`${CELL} ${rowBase} font-medium text-slate-200`}>{repair.customer}</div>
+                  <div className={`${CELL} ${rowBase} text-slate-400 whitespace-nowrap text-xs font-mono`}>
+                    {repair.phone ?? <span className="text-slate-700">—</span>}
+                  </div>
                   <div className={`${CELL} ${rowBase} text-slate-300`}>{repair.items.join(', ')}</div>
                   <div className={`${CELL} ${rowBase} text-slate-500`}>
-                    {repair.specs ?? <span className="text-slate-700">&mdash;</span>}
+                    {repair.specs ?? <span className="text-slate-700">—</span>}
                   </div>
                   <div className={`${CELL} ${rowBase} whitespace-nowrap`}>
                     <StatusBadge

@@ -19,6 +19,7 @@ const EMPTY_FORM: RepairForm = {
   ticket: '',
   date: TODAY,
   customer: '',
+  phone: '',
   items: [],
   specs: '',
   status: 'Pending'
@@ -166,6 +167,7 @@ export default function App() {
       ticket: repair.ticket,
       date: repair.date,
       customer: repair.customer,
+      phone: repair.phone ?? '',
       items: repair.items,
       specs: repair.specs ?? '',
       status: repair.status
@@ -224,9 +226,9 @@ export default function App() {
 
     const matchesSearch =
       !query ||
-      [repair.customer, ...repair.items, repair.ticket, repair.specs].some(match =>
-        match?.toLowerCase().includes(query)
-      );
+      [repair.customer, repair.phone, ...repair.items, repair.ticket, repair.specs]
+        .filter((match): match is string => !!match)
+        .some(match => match.toLowerCase().includes(query));
 
     return matchesStatus && matchesSearch;
   });
@@ -244,7 +246,7 @@ export default function App() {
         <div className="absolute -top-48 right-1/4 w-150 h-150 bg-violet-600/3 rounded-full blur-[120px]" />
         <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-500/20 to-transparent" />
       </div>
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-400 mx-auto px-2 sm:px-4 lg:px-6">
         <Header onNewRepair={openAdd} ticketCount={repairs.length} />
         <StatsBar
           counts={counts}

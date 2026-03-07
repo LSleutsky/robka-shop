@@ -5,6 +5,7 @@ export interface Repair {
   ticket: string;
   date: string;
   customer: string;
+  phone: string | null;
   items: string[];
   specs: string | null;
   status: Status;
@@ -16,6 +17,7 @@ export interface RepairForm {
   ticket: string;
   date: string;
   customer: string;
+  phone: string;
   items: string[];
   specs: string;
   status: Status;

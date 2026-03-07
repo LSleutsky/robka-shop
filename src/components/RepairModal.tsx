@@ -9,6 +9,7 @@ import Field from '@/components/Field';
 import { STATUSES, STATUS_CONFIG } from '@/config/statuses';
 import { inputBase } from '@/constants';
 import { Repair, RepairForm, Status } from '@/types';
+import { formatPhone } from '@/utils';
 
 interface RepairModalProps {
   form: RepairForm;
@@ -189,15 +190,26 @@ export default function RepairModal({
               <DatePicker onChange={date => onFormChange({ date })} value={form.date} />
             </Field>
           </div>
-          <Field label="Customer *">
-            <input
-              className={inputBase}
-              onChange={event => onFormChange({ customer: event.target.value })}
-              placeholder="Robert Gutman"
-              type="text"
-              value={form.customer}
-            />
-          </Field>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Customer Name *">
+              <input
+                className={inputBase}
+                onChange={event => onFormChange({ customer: event.target.value })}
+                placeholder="Robert Gutman"
+                type="text"
+                value={form.customer}
+              />
+            </Field>
+            <Field label="Phone">
+              <input
+                className={inputBase}
+                onChange={event => onFormChange({ phone: formatPhone(event.target.value) })}
+                placeholder="(555) 123-4567"
+                type="tel"
+                value={form.phone}
+              />
+            </Field>
+          </div>
           <Field label="Items *">
             <input
               className={inputBase}

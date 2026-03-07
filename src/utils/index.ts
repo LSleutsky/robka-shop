@@ -13,22 +13,22 @@ const MONTHS = [
   'December'
 ];
 
-export const ordinal = (n: number): string => {
-  const remainder = n % 100;
+export const ordinal = (number: number): string => {
+  const remainder = number % 100;
 
   if (remainder >= 11 && remainder <= 13) {
-    return `${String(n)}th`;
+    return `${String(number)}th`;
   }
 
-  switch (n % 10) {
+  switch (number % 10) {
     case 1:
-      return `${String(n)}st`;
+      return `${String(number)}st`;
     case 2:
-      return `${String(n)}nd`;
+      return `${String(number)}nd`;
     case 3:
-      return `${String(n)}rd`;
+      return `${String(number)}rd`;
     default:
-      return `${String(n)}th`;
+      return `${String(number)}th`;
   }
 };
 
@@ -36,4 +36,22 @@ export const formatDate = (dateString: string): string => {
   const [year, month, day] = dateString.split('-').map(Number);
 
   return `${MONTHS[month - 1]} ${ordinal(day)}, ${String(year)}`;
+};
+
+export const formatPhone = (value: string): string => {
+  const digits = value.replace(/\D/g, '').slice(0, 10);
+
+  if (digits.length === 0) {
+    return '';
+  }
+
+  if (digits.length <= 3) {
+    return `(${digits}`;
+  }
+
+  if (digits.length <= 6) {
+    return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  }
+
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 };

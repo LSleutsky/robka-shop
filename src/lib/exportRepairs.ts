@@ -7,6 +7,7 @@ const COLUMNS: Partial<ExcelJS.Column>[] = [
   { header: 'Ticket', key: 'ticket', width: 14 },
   { header: 'Date', key: 'date', width: 22 },
   { header: 'Customer', key: 'customer', width: 24 },
+  { header: 'Phone', key: 'phone', width: 18 },
   { header: 'Items', key: 'items', width: 32 },
   { header: 'Specs', key: 'specs', width: 32 },
   { header: 'Status', key: 'status', width: 14 }
@@ -35,6 +36,7 @@ const buildWorkbook = (repairs: Repair[]): ExcelJS.Workbook => {
       ticket: repair.ticket,
       date: formatDate(repair.date),
       customer: repair.customer,
+      phone: repair.phone ?? '',
       items: repair.items.join(', '),
       specs: repair.specs ?? '',
       status: repair.status
