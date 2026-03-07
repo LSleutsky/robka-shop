@@ -246,7 +246,12 @@ export default function App() {
       </div>
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Header onNewRepair={openAdd} ticketCount={repairs.length} />
-        <StatsBar counts={counts} filterStatus={filterStatus} onFilterChange={setFilterStatus} />
+        <StatsBar
+          counts={counts}
+          filterStatus={filterStatus}
+          hasRepairs={repairs.length > 0}
+          onFilterChange={setFilterStatus}
+        />
         <SearchBar
           allSelected={allFilteredSelected}
           filterStatus={filterStatus}

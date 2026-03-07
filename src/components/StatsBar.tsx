@@ -6,10 +6,11 @@ import { Status } from '@/types';
 interface StatsBarProps {
   counts: Record<Status, number>;
   filterStatus: Status | 'all';
+  hasRepairs: boolean;
   onFilterChange: (status: Status | 'all') => void;
 }
 
-export default function StatsBar({ counts, filterStatus, onFilterChange }: StatsBarProps) {
+export default function StatsBar({ counts, filterStatus, hasRepairs, onFilterChange }: StatsBarProps) {
   return (
     <div className="pb-5">
       <div className="rounded-2xl border border-slate-700/40 bg-slate-900/50 backdrop-blur-sm overflow-hidden grid grid-cols-2 md:grid-cols-4">
@@ -23,12 +24,13 @@ export default function StatsBar({ counts, filterStatus, onFilterChange }: Stats
               key={status}
               className={clsx(
                 'relative group p-4 text-left transition-all duration-300',
-                active ? 'bg-slate-800/50' : 'hover:bg-slate-800/20',
+                !hasRepairs && 'cursor-default',
+                active ? 'bg-slate-800/50' : hasRepairs && 'hover:bg-slate-800/20',
                 index % 2 !== 0 && 'border-l border-slate-700/30',
                 index >= 2 && 'border-t border-slate-700/30 md:border-t-0',
                 index >= 1 && 'md:border-l md:border-slate-700/30'
               )}
-              onClick={() => onFilterChange(active ? 'all' : status)}
+              onClick={hasRepairs ? () => onFilterChange(active ? 'all' : status) : undefined}
             >
               <div
                 className={clsx(
