@@ -13,6 +13,10 @@ button, select, [role="button"], label {
   cursor: pointer;
 }
 
+button:disabled, select:disabled {
+  cursor: not-allowed;
+}
+
 input:not([type="checkbox"]):not([type="radio"]), textarea {
   cursor: text;
 }
