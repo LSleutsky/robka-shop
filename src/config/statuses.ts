@@ -12,10 +12,10 @@ export interface StatusConfig {
   glow: string;
 }
 
-export const STATUSES: Status[] = ['pending', 'in progress', 'done', 'picked up'];
+export const STATUSES: Status[] = ['Pending', 'In Progress', 'Done', 'Picked Up'];
 
 export const STATUS_CONFIG: Record<Status, StatusConfig> = {
-  pending: {
+  Pending: {
     label: 'Pending',
     icon: Clock,
     gradient: 'from-amber-500/20 to-orange-500/10',
@@ -25,7 +25,7 @@ export const STATUS_CONFIG: Record<Status, StatusConfig> = {
     dot: 'bg-amber-400',
     glow: 'shadow-amber-500/10'
   },
-  'in progress': {
+  'In Progress': {
     label: 'In Progress',
     icon: CircleDot,
     gradient: 'from-blue-500/20 to-cyan-500/10',
@@ -35,7 +35,7 @@ export const STATUS_CONFIG: Record<Status, StatusConfig> = {
     dot: 'bg-blue-400',
     glow: 'shadow-blue-500/10'
   },
-  done: {
+  Done: {
     label: 'Done',
     icon: CheckCircle2,
     gradient: 'from-emerald-500/20 to-teal-500/10',
@@ -45,7 +45,7 @@ export const STATUS_CONFIG: Record<Status, StatusConfig> = {
     dot: 'bg-emerald-400',
     glow: 'shadow-emerald-500/10'
   },
-  'picked up': {
+  'Picked Up': {
     label: 'Picked Up',
     icon: PackageCheck,
     gradient: 'from-violet-500/20 to-purple-500/10',

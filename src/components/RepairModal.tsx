@@ -1,6 +1,5 @@
 import { clsx } from 'clsx';
 import { Plus, Pencil, X, Loader2 } from 'lucide-react';
-import { ChangeEvent } from 'react';
 
 import Field from '@/components/Field';
 
@@ -11,9 +10,9 @@ interface RepairModalProps {
   form: RepairForm;
   editingRepair: Repair | null;
   saving: boolean;
-  onFieldChange: (
-    key: keyof RepairForm
-  ) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  itemsInput: string;
+  onFormChange: (updates: Partial<RepairForm>) => void;
+  onItemsInputChange: (value: string) => void;
   onSave: () => void;
   onClose: () => void;
 }
@@ -21,8 +20,17 @@ interface RepairModalProps {
 const inputBase =
   'w-full bg-slate-800/80 border border-slate-600/40 text-slate-100 px-3.5 py-2.5 text-sm rounded-xl focus:outline-none focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/20 placeholder-slate-500 transition-all duration-200 hover:border-slate-500/50 shadow-sm shadow-black/10';
 
-export default function RepairModal({ form, editingRepair, saving, onFieldChange, onSave, onClose }: RepairModalProps) {
-  const canSave = form.customer.trim() && form.item.trim() && form.ticket.trim() && !saving;
+export default function RepairModal({
+  form,
+  editingRepair,
+  saving,
+  itemsInput,
+  onFormChange,
+  onItemsInputChange,
+  onSave,
+  onClose
+}: RepairModalProps) {
+  const canSave = form.ticket.trim() && form.customer.trim() && itemsInput.trim().length > 0 && !saving;
 
   return (
     <div
@@ -62,45 +70,54 @@ export default function RepairModal({ form, editingRepair, saving, onFieldChange
               <input
                 autoFocus
                 className={inputBase}
-                onChange={onFieldChange('ticket')}
-                placeholder="TK-001"
+                onChange={event => onFormChange({ ticket: event.target.value })}
+                placeholder="TKT-1000"
                 type="text"
                 value={form.ticket}
               />
             </Field>
             <Field label="Date">
-              <input className={inputBase} onChange={onFieldChange('date')} type="date" value={form.date} />
+              <input
+                className={inputBase}
+                onChange={event => onFormChange({ date: event.target.value })}
+                type="date"
+                value={form.date}
+              />
             </Field>
           </div>
           <Field label="Customer *">
             <input
               className={inputBase}
-              onChange={onFieldChange('customer')}
+              onChange={event => onFormChange({ customer: event.target.value })}
               placeholder="John Smith"
               type="text"
               value={form.customer}
             />
           </Field>
-          <Field label="Item *">
+          <Field label="Items *">
             <input
               className={inputBase}
-              onChange={onFieldChange('item')}
+              onChange={event => onItemsInputChange(event.target.value)}
               placeholder="Laptop, iPhone 14, Samsung TV..."
               type="text"
-              value={form.item}
+              value={itemsInput}
             />
           </Field>
           <Field label="Specs">
             <textarea
               className={`${inputBase} resize-none`}
-              onChange={onFieldChange('specs')}
+              onChange={event => onFormChange({ specs: event.target.value })}
               placeholder="Screen replacement, battery swap, diagnostics..."
               rows={3}
-              value={form.specs ?? ''}
+              value={form.specs}
             />
           </Field>
           <Field label="Status">
-            <select className={inputBase} onChange={onFieldChange('status')} value={form.status}>
+            <select
+              className={inputBase}
+              onChange={event => onFormChange({ status: event.target.value as RepairForm['status'] })}
+              value={form.status}
+            >
               {STATUSES.map(status => (
                 <option key={status} value={status}>
                   {STATUS_CONFIG[status].label}

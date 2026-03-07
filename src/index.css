@@ -9,6 +9,18 @@
   box-sizing: border-box;
 }
 
+button, select, [role="button"], label {
+  cursor: pointer;
+}
+
+input:not([type="checkbox"]):not([type="radio"]), textarea {
+  cursor: text;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  cursor: pointer;
+}
+
 body {
   margin: 0;
   background-color: #050810;

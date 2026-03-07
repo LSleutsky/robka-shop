@@ -11,12 +11,12 @@ export default function Header({ ticketCount, onNewRepair }: HeaderProps) {
       <div className="flex items-center gap-3.5">
         <div className="relative group">
           <div className="absolute inset-0 bg-linear-to-br from-blue-500 to-violet-600 rounded-xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
-          <div className="relative w-10 h-10 rounded-xl bg-linear-to-br from-blue-500 to-violet-600 flex items-center justify-center shadow-lg">
-            <Wrench className="w-4.5 h-4.5 text-white" strokeWidth={2.5} />
+          <div className="relative w-12 h-12 rounded-xl bg-linear-to-br from-blue-500 to-violet-600 flex items-center justify-center shadow-lg">
+            <Wrench className="size-8 text-white" strokeWidth={2.5} />
           </div>
         </div>
         <div>
-          <h1 className="text-lg font-bold tracking-tight text-white font-mono">Repair Tracker</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-white font-mono">Repair Tracker</h1>
           <p className="text-slate-500 font-medium">
             {ticketCount} ticket{ticketCount !== 1 && 's'}
           </p>

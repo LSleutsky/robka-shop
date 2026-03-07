@@ -1,13 +1,22 @@
-export type Status = 'pending' | 'in progress' | 'done' | 'picked up';
+export type Status = 'Pending' | 'In Progress' | 'Done' | 'Picked Up';
 
 export interface Repair {
   id: number;
   ticket: string;
   date: string;
   customer: string;
-  item: string;
+  items: string[];
   specs: string | null;
   status: Status;
+  picked_up_at: string | null;
+  created_at: string;
 }
 
-export type RepairForm = Omit<Repair, 'id'>;
+export interface RepairForm {
+  ticket: string;
+  date: string;
+  customer: string;
+  items: string[];
+  specs: string;
+  status: Status;
+}

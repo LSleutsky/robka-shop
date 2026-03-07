@@ -1,6 +1,7 @@
 import { X } from 'lucide-react';
-import { ChangeEvent, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
+import ConfirmModal from '@/components/ConfirmModal';
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
 import StatsBar from '@/components/StatsBar';
@@ -17,10 +18,12 @@ const EMPTY_FORM: RepairForm = {
   ticket: '',
   date: TODAY,
   customer: '',
-  item: '',
+  items: [],
   specs: '',
-  status: 'pending'
+  status: 'Pending'
 };
+
+const capitalize = (value: string) => value.replace(/\b\w/g, char => char.toUpperCase());
 
 export default function App() {
   const [repairs, setRepairs] = useState<Repair[]>([]);
@@ -32,6 +35,9 @@ export default function App() {
   const [filterStatus, setFilterStatus] = useState<Status | 'all'>('all');
   const [search, setSearch] = useState('');
   const [form, setForm] = useState<RepairForm>(EMPTY_FORM);
+  const [itemsInput, setItemsInput] = useState('');
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [confirmDelete, setConfirmDelete] = useState<{ ids: number[]; message: string; label: string } | null>(null);
 
   const fetchRepairs = async () => {
     setLoading(true);
@@ -49,22 +55,29 @@ export default function App() {
   };
 
   const saveRepair = async () => {
-    if (!form.customer.trim() || !form.item.trim() || !form.ticket.trim()) {
+    const items = itemsInput
+      .split(',')
+      .map(item => item.trim())
+      .filter(Boolean);
+
+    if (!form.ticket.trim() || !form.customer.trim() || !items.length) {
       return;
     }
 
     setSaving(true);
 
+    const payload = { ...form, items };
+
     if (editingRepair) {
-      const { error } = await supabase.from('repairs').update(form).eq('id', editingRepair.id);
+      const { error } = await supabase.from('repairs').update(payload).eq('id', editingRepair.id);
 
       if (!error) {
         setRepairs(prevRepair =>
-          prevRepair.map(repair => (repair.id === editingRepair.id ? { ...repair, ...form } : repair))
+          prevRepair.map(repair => (repair.id === editingRepair.id ? { ...repair, ...payload } : repair))
         );
       }
     } else {
-      const { data, error } = await supabase.from('repairs').insert([form]).select();
+      const { data, error } = await supabase.from('repairs').insert([payload]).select();
 
       if (!error && data.length) {
         setRepairs(prevRepair => [data[0] as Repair, ...prevRepair]);
@@ -83,21 +96,66 @@ export default function App() {
     }
   };
 
-  const deleteRepair = async (id: number, name: string) => {
-    if (!window.confirm(`Delete repair for ${name}? This cannot be undone.`)) {
+  const deleteRepairs = async (ids: number[]) => {
+    if (!ids.length) {
+      setConfirmDelete(null);
+
       return;
     }
 
-    const { error } = await supabase.from('repairs').delete().eq('id', id);
+    const { error: deleteError } = await supabase.from('repairs').delete().in('id', ids);
 
-    if (!error) {
-      setRepairs(prevRepair => prevRepair.filter(repair => repair.id !== id));
+    if (deleteError) {
+      setError('Failed to delete repairs. Please try again.');
+    } else {
+      const idSet = new Set(ids);
+
+      setRepairs(prevRepairs => prevRepairs.filter(repair => !idSet.has(repair.id)));
+      setSelectedIds(prevIds => {
+        const next = new Set(prevIds);
+
+        for (const id of ids) {
+          next.delete(id);
+        }
+
+        return next;
+      });
+    }
+
+    setConfirmDelete(null);
+  };
+
+  const requestDelete = (ids?: number[]) => {
+    const toDelete = ids ?? [...selectedIds];
+
+    if (!toDelete.length) {
+      return;
+    }
+
+    const count = toDelete.length;
+
+    if (count === 1) {
+      const repair = repairs.find(r => r.id === toDelete[0]);
+      const ticket = repair?.ticket ?? '';
+
+      setConfirmDelete({
+        ids: toDelete,
+        message: `Delete ${ticket}? This cannot be undone.`,
+        label: `Delete ${ticket}`
+      });
+    } else {
+      setConfirmDelete({
+        ids: toDelete,
+        message: `Delete ${String(count)} repairs? This cannot be undone.`,
+        label: `Delete ${String(count)} Repairs`
+      });
     }
   };
 
   const openAdd = () => {
     setEditingRepair(null);
     setForm({ ...EMPTY_FORM, date: TODAY });
+    setItemsInput('');
     setShowModal(true);
   };
 
@@ -107,10 +165,11 @@ export default function App() {
       ticket: repair.ticket,
       date: repair.date,
       customer: repair.customer,
-      item: repair.item,
+      items: repair.items,
       specs: repair.specs ?? '',
       status: repair.status
     });
+    setItemsInput(repair.items.join(', '));
     setShowModal(true);
   };
 
@@ -118,27 +177,60 @@ export default function App() {
     setShowModal(false);
     setEditingRepair(null);
     setForm(EMPTY_FORM);
+    setItemsInput('');
   };
 
-  const setField =
-    (key: keyof RepairForm) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-      setForm(prevForm => ({ ...prevForm, [key]: event.target.value }));
+  const updateForm = (updates: Partial<RepairForm>) => {
+    if (updates.customer !== undefined) {
+      updates.customer = capitalize(updates.customer);
+    }
+
+    setForm(prevForm => ({ ...prevForm, ...updates }));
+  };
+
+  const toggleSelect = (id: number) => {
+    setSelectedIds(prevIds => {
+      const next = new Set(prevIds);
+
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    const allSelected = filteredRepairs.every(repair => selectedIds.has(repair.id));
+
+    if (allSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredRepairs.map(repair => repair.id)));
+    }
+  };
 
   const counts = STATUSES.reduce<Record<Status, number>>(
     (acc, status) => ({ ...acc, [status]: repairs.filter(repair => repair.status === status).length }),
     {} as Record<Status, number>
   );
 
-  const filtered = repairs.filter(repair => {
+  const filteredRepairs = repairs.filter(repair => {
     const matchesStatus = filterStatus === 'all' || repair.status === filterStatus;
     const query = search.toLowerCase();
 
     const matchesSearch =
       !query ||
-      [repair.customer, repair.item, repair.ticket, repair.specs].some(match => match?.toLowerCase().includes(query));
+      [repair.customer, ...repair.items, repair.ticket, repair.specs].some(match =>
+        match?.toLowerCase().includes(query)
+      );
 
     return matchesStatus && matchesSearch;
   });
+
+  const allFilteredSelected = filteredRepairs.length > 0 && filteredRepairs.every(repair => selectedIds.has(repair.id));
 
   useEffect(() => {
     void fetchRepairs();
@@ -155,15 +247,13 @@ export default function App() {
         <Header onNewRepair={openAdd} ticketCount={repairs.length} />
         <StatsBar counts={counts} filterStatus={filterStatus} onFilterChange={setFilterStatus} />
         <SearchBar
+          allSelected={allFilteredSelected}
           filterStatus={filterStatus}
-          filteredCount={filtered.length}
-          onClear={() => {
-            setFilterStatus('all');
-            setSearch('');
-          }}
+          onClearFilter={() => setFilterStatus('all')}
+          onRemoveSelected={() => requestDelete()}
           onSearchChange={setSearch}
           search={search}
-          totalCount={repairs.length}
+          selectedCount={selectedIds.size}
         />
         {error && (
           <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm flex items-center gap-2">
@@ -172,22 +262,36 @@ export default function App() {
           </div>
         )}
         <RepairTable
-          filtered={filtered}
+          filteredRepairs={filteredRepairs}
           loading={loading}
-          onDelete={(id, name) => void deleteRepair(id, name)}
+          onDelete={id => requestDelete([id])}
           onEdit={openEdit}
           onStatusChange={(id, status) => void updateStatus(id, status)}
+          onToggleAll={toggleAll}
+          onToggleSelect={toggleSelect}
           repairs={repairs}
+          selectedIds={selectedIds}
         />
       </div>
       {showModal && (
         <RepairModal
           editingRepair={editingRepair}
           form={form}
+          itemsInput={itemsInput}
           onClose={closeModal}
-          onFieldChange={setField}
+          onFormChange={updateForm}
+          onItemsInputChange={setItemsInput}
           onSave={() => void saveRepair()}
           saving={saving}
+        />
+      )}
+      {confirmDelete && (
+        <ConfirmModal
+          confirmLabel={confirmDelete.label}
+          message={confirmDelete.message}
+          onCancel={() => setConfirmDelete(null)}
+          onConfirm={() => void deleteRepairs(confirmDelete.ids)}
+          title="Confirm Deletion"
         />
       )}
     </div>
