@@ -18,7 +18,7 @@ A repair tracking app for managing customer repair tickets. Built with React, Su
 ### Statuses
 
 | Status | Meaning |
-|---|---|
+| --- | --- |
 | `Pending` | Repair has been received but not started |
 | `In Progress` | Actively being worked on |
 | `Done` | Repair is complete, awaiting pickup |
@@ -41,3 +41,7 @@ When a repair is marked as `Picked Up`, the pickup date is recorded automaticall
 ## Date Picker
 
 The date field uses a calendar picker. Navigate between months with the arrow buttons. If you've scrolled away from the current month, a `Today` button appears to jump back.
+
+## Export to Spreadsheet
+
+By selecting the `Export to Spreadsheet` button, if on Chrome/Edge, you'll be prompted to choose a location and filename for a spreadsheet export of the currently visible repairs (*respecting any filters/search*). If your browser doesn't support the file picker API (*Firefox, Safari*), the spreadsheet file will be downloaded to your default downloads folder, with the name of `repair-tracker-<timestamp>.xlsx`.

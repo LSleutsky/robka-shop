@@ -9,6 +9,7 @@ import RepairModal from '@/components/RepairModal';
 import RepairTable from '@/components/RepairTable';
 
 import { STATUSES } from '@/config/statuses';
+import { exportRepairs } from '@/lib/exportRepairs';
 import { supabase } from '@/lib/supabase';
 import { Repair, RepairForm, Status } from '@/types';
 
@@ -266,6 +267,7 @@ export default function App() {
           loading={loading}
           onDelete={id => requestDelete([id])}
           onEdit={openEdit}
+          onExport={() => void exportRepairs(filteredRepairs)}
           onStatusChange={(id, status) => void updateStatus(id, status)}
           onToggleAll={toggleAll}
           onToggleSelect={toggleSelect}

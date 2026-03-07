@@ -1,4 +1,4 @@
-import { Pencil, Trash2, Loader2 } from 'lucide-react';
+import { Pencil, Trash2, Loader2, Download } from 'lucide-react';
 
 import EmptyState from '@/components/EmptyState';
 import StatusBadge from '@/components/StatusBadge';
@@ -16,6 +16,7 @@ interface RepairTableProps {
   onToggleSelect: (id: number) => void;
   onToggleAll: () => void;
   onStatusChange: (id: number, status: Status) => void;
+  onExport: () => void;
 }
 
 const GRID_COLS =
@@ -48,7 +49,8 @@ export default function RepairTable({
   onDelete,
   onToggleSelect,
   onToggleAll,
-  onStatusChange
+  onStatusChange,
+  onExport
 }: RepairTableProps) {
   const allSelected = filteredRepairs.length > 0 && filteredRepairs.every(repair => selectedIds.has(repair.id));
 
@@ -154,6 +156,17 @@ export default function RepairTable({
           </div>
         )}
       </div>
+      {filteredRepairs.length > 0 && (
+        <div className="flex justify-center mt-8">
+          <button
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-slate-400 hover:text-white border border-slate-700/40 hover:border-slate-600 rounded-xl hover:bg-slate-800/60 transition-all duration-200"
+            onClick={onExport}
+          >
+            <Download className="w-4 h-4" />
+            Export to Spreadsheet
+          </button>
+        </div>
+      )}
     </div>
   );
 }
