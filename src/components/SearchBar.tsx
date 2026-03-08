@@ -35,7 +35,7 @@ export default function SearchBar({
       <div className="relative flex-1 min-w-0">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
         <input
-          className={`w-full bg-slate-800/60 border border-slate-600/30 text-slate-100 pl-10 py-2.5 rounded-xl focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 placeholder-slate-500 transition-all duration-200 hover:border-slate-500/40 shadow-sm shadow-black/20 ${search ? 'pr-9' : 'pr-4'}`}
+          className={`w-full bg-slate-800/60 border border-slate-600/30 text-slate-100 text-base sm:text-sm pl-10 py-2.5 rounded-xl focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 placeholder-slate-500 transition-all duration-200 hover:border-slate-500/40 shadow-sm shadow-black/20 ${search ? 'pr-9' : 'pr-4'}`}
           onChange={event => onSearchChange(event.target.value)}
           placeholder="Search tickets..."
           type="text"
