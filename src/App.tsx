@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react';
 
 import ConfirmModal from '@/components/ConfirmModal';
 import Header from '@/components/Header';
-import SearchBar from '@/components/SearchBar';
-import StatsBar from '@/components/StatsBar';
 import RepairModal from '@/components/RepairModal';
 import RepairTable from '@/components/RepairTable';
+import SearchBar from '@/components/SearchBar';
+import StatsBar from '@/components/StatsBar';
 
 import { STATUSES } from '@/config/statuses';
 import { exportRepairs } from '@/lib/exportRepairs';

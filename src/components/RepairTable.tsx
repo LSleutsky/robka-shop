@@ -84,17 +84,9 @@ export default function RepairTable({
   onStatusChange,
   onExport
 }: RepairTableProps) {
+  const prevFilteredLength = useRef(filteredRepairs.length);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState<number>(15);
-  const prevFilteredLength = useRef(filteredRepairs.length);
-
-  useEffect(() => {
-    if (filteredRepairs.length !== prevFilteredLength.current) {
-      prevFilteredLength.current = filteredRepairs.length;
-
-      setPage(0);
-    }
-  }, [filteredRepairs.length]);
 
   const totalRows = filteredRepairs.length;
   const showAll = pageSize === 0;
@@ -119,6 +111,14 @@ export default function RepairTable({
     setPageSize(newSize);
     setPage(0);
   };
+
+  useEffect(() => {
+    if (filteredRepairs.length !== prevFilteredLength.current) {
+      prevFilteredLength.current = filteredRepairs.length;
+
+      setPage(0);
+    }
+  }, [filteredRepairs.length]);
 
   return (
     <div className="pb-8 mt-1">
