@@ -13,6 +13,10 @@ import { exportRepairs } from '@/lib/exportRepairs';
 import { supabase } from '@/lib/supabase';
 import { Repair, RepairForm, Status } from '@/types';
 
+interface AppProps {
+  onSignOut: () => void;
+}
+
 const TODAY = new Date().toISOString().split('T')[0];
 
 const EMPTY_FORM: RepairForm = {
@@ -27,7 +31,7 @@ const EMPTY_FORM: RepairForm = {
 
 const capitalize = (value: string) => value.replace(/\b\w/g, char => char.toUpperCase());
 
-export default function App() {
+export default function App({ onSignOut }: AppProps) {
   const [repairs, setRepairs] = useState<Repair[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,6 +43,7 @@ export default function App() {
   const [form, setForm] = useState<RepairForm>(EMPTY_FORM);
   const [itemsInput, setItemsInput] = useState('');
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [showSignOut, setShowSignOut] = useState(false);
 
   const [confirmDelete, setConfirmDelete] = useState<{
     ids: number[];
@@ -258,7 +263,7 @@ export default function App() {
         <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-500/20 to-transparent" />
       </div>
       <div className="relative max-w-400 mx-auto px-2 sm:px-4 lg:px-6">
-        <Header onNewRepair={openAdd} ticketCount={repairs.length} />
+        <Header onNewRepair={openAdd} onSignOut={() => setShowSignOut(true)} ticketCount={repairs.length} />
         <StatsBar
           counts={counts}
           filterStatus={filterStatus}
@@ -323,6 +328,15 @@ export default function App() {
           onConfirm={() => void deleteRepairs(confirmDelete.ids)}
           tickets={confirmDelete.tickets}
           title="Confirm Deletion"
+        />
+      )}
+      {showSignOut && (
+        <ConfirmModal
+          confirmLabel="Log Out"
+          message="Are you sure you want to log out?"
+          onCancel={() => setShowSignOut(false)}
+          onConfirm={onSignOut}
+          title="Log Out"
         />
       )}
     </div>
