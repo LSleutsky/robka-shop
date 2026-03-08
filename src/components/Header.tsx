@@ -1,4 +1,4 @@
-import { Wrench, Plus } from 'lucide-react';
+import { Plus, Toolbox } from 'lucide-react';
 
 interface HeaderProps {
   ticketCount: number;
@@ -12,7 +12,7 @@ export default function Header({ ticketCount, onNewRepair }: HeaderProps) {
         <div className="relative group shrink-0">
           <div className="absolute inset-0 bg-linear-to-br from-blue-500 to-violet-600 rounded-xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
           <div className="relative w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-linear-to-br from-blue-500 to-violet-600 flex items-center justify-center shadow-lg">
-            <Wrench className="size-5 sm:size-8 text-white" strokeWidth={2.5} />
+            <Toolbox className="size-5 sm:size-8 text-white" strokeWidth={2.5} />
           </div>
         </div>
         <div className="min-w-0">
