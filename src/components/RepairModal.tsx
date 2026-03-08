@@ -37,8 +37,9 @@ function StatusSelect({ value, onChange }: { value: Status; onChange: (s: Status
     }
 
     const rect = buttonRef.current.getBoundingClientRect();
+    const left = Math.min(rect.left, window.innerWidth - rect.width - 8);
 
-    setPosition({ top: rect.bottom + 6, left: rect.left, width: rect.width });
+    setPosition({ top: rect.bottom + 6, left: Math.max(8, left), width: rect.width });
   }, []);
 
   useEffect(() => {
@@ -144,7 +145,7 @@ export default function RepairModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
       onClick={event => {
         if (event.target === event.currentTarget) {
           onClose();
@@ -152,9 +153,9 @@ export default function RepairModal({
       }}
     >
       <div className="absolute inset-0 bg-black/70 backdrop-blur-md" onClick={onClose} />
-      <div className="relative w-full max-w-lg bg-slate-900 border border-slate-700/50 rounded-2xl shadow-2xl shadow-black/60 overflow-hidden">
+      <div className="relative w-full max-w-lg bg-slate-900 border border-slate-700/50 rounded-2xl shadow-2xl shadow-black/60 overflow-y-auto max-h-[calc(100dvh-1rem)] sm:max-h-[calc(100dvh-2rem)]">
         <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-500/30 to-transparent" />
-        <div className="border-b border-slate-800/60 px-6 py-5 flex items-center justify-between">
+        <div className="border-b border-slate-800/60 px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-linear-to-br from-blue-500/20 to-violet-500/20 flex items-center justify-center">
               {editingRepair ? (
@@ -174,8 +175,8 @@ export default function RepairModal({
             <X className="w-4 h-4" />
           </button>
         </div>
-        <div className="p-6 space-y-5">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Ticket *">
               <input
                 autoFocus
@@ -190,7 +191,7 @@ export default function RepairModal({
               <DatePicker onChange={date => onFormChange({ date })} value={form.date} />
             </Field>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Customer Name *">
               <input
                 className={inputBase}
@@ -232,7 +233,7 @@ export default function RepairModal({
             <StatusSelect onChange={status => onFormChange({ status })} value={form.status} />
           </Field>
         </div>
-        <div className="border-t border-slate-800/60 px-6 py-4 flex justify-end gap-3">
+        <div className="border-t border-slate-800/60 px-4 sm:px-6 py-4 flex justify-end gap-3">
           <button
             className="inline-flex items-center px-6 py-2.5 text-sm text-slate-400 hover:text-red-400 rounded-xl border border-slate-700/40 hover:border-red-500/30 hover:bg-red-500/10 transition-all duration-200 font-semibold"
             onClick={onClose}

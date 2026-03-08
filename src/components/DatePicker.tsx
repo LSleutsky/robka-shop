@@ -29,8 +29,10 @@ export default function DatePicker({ value, onChange }: DatePickerProps) {
     }
 
     const rect = buttonRef.current.getBoundingClientRect();
+    const calendarWidth = 320;
+    const left = Math.min(rect.left, window.innerWidth - calendarWidth - 8);
 
-    setPosition({ top: rect.bottom + 6, left: rect.left });
+    setPosition({ top: rect.bottom + 6, left: Math.max(8, left) });
   }, []);
 
   useEffect(() => {
@@ -75,7 +77,7 @@ export default function DatePicker({ value, onChange }: DatePickerProps) {
         createPortal(
           <div
             ref={calendarRef}
-            className="fixed z-100 bg-slate-800 border border-slate-700/50 rounded-xl shadow-xl shadow-black/40 p-3"
+            className="fixed z-100 bg-slate-800 border border-slate-700/50 rounded-xl shadow-xl shadow-black/40 p-3 max-w-[calc(100vw-1rem)]"
             style={{ top: position.top, left: position.left }}
           >
             <DayPicker

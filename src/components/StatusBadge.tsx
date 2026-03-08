@@ -43,10 +43,12 @@ export default function StatusBadge({ status, interactive, onChange }: StatusBad
     }
 
     const rect = buttonRef.current.getBoundingClientRect();
+    const dropdownWidth = 140;
+    const left = Math.min(rect.left, window.innerWidth - dropdownWidth - 8);
 
     setPosition({
       top: rect.top - 4,
-      left: rect.left
+      left: Math.max(8, left)
     });
   }, []);
 

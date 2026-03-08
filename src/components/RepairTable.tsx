@@ -38,9 +38,9 @@ interface RepairTableProps {
 }
 
 const GRID_COLS =
-  'grid-cols-[3rem_minmax(5rem,1fr)_minmax(5rem,1fr)_minmax(6rem,1.5fr)_minmax(7rem,1.2fr)_minmax(6rem,2fr)_minmax(6rem,2fr)_minmax(7rem,1.2fr)_5.5rem]';
+  'grid-cols-[3rem_minmax(5rem,1fr)_minmax(7.5rem,1.2fr)_minmax(6rem,1.5fr)_minmax(7rem,1.2fr)_minmax(6rem,2fr)_minmax(6rem,2fr)_minmax(8.5rem,1.2fr)] sm:grid-cols-[3rem_minmax(5rem,1fr)_minmax(7.5rem,1.2fr)_minmax(6rem,1.5fr)_minmax(7rem,1.2fr)_minmax(6rem,2fr)_minmax(6rem,2fr)_minmax(8.5rem,1.2fr)_5.5rem]';
 
-const CELL = 'px-4 py-3.5 flex items-center justify-center text-center';
+const CELL = 'px-3 sm:px-4 py-3 sm:py-3.5 flex items-center justify-center text-center text-sm';
 const CELL_FIRST = 'px-2 py-3.5 flex items-center justify-center sticky left-0 z-10';
 const CELL_LAST = 'pl-2 pr-5 py-3.5';
 const HEADER_BG = 'bg-[#151a2c] border-b border-slate-700/40';
@@ -149,7 +149,7 @@ export default function RepairTable({
                   {header.label}
                 </div>
               ))}
-              <div className={`${CELL_LAST} ${HEADER_BG} sticky top-0 z-20`} />
+              <div className={`${CELL_LAST} ${HEADER_BG} sticky top-0 z-20 hidden sm:block`} />
               {pagedRepairs.map((repair, index) => {
                 const selected = selectedIds.has(repair.id);
                 const stripe = index % 2 === 0 ? ROW_ODD : ROW_EVEN;
@@ -182,7 +182,7 @@ export default function RepairTable({
                       {repair.phone ?? <span className="text-slate-700">—</span>}
                     </div>
                     <div className={`${CELL} ${rowBase} text-slate-300`}>{repair.items.join(', ')}</div>
-                    <div className={`${CELL} ${rowBase} text-slate-500`}>
+                    <div className={`${CELL} ${rowBase} text-slate-500 pr-6`}>
                       {repair.specs ?? <span className="text-slate-700">—</span>}
                     </div>
                     <div className={`${CELL} ${rowBase} whitespace-nowrap`}>
@@ -192,8 +192,10 @@ export default function RepairTable({
                         status={repair.status}
                       />
                     </div>
-                    <div className={`${CELL_LAST} ${rowBase} whitespace-nowrap flex items-center justify-center`}>
-                      <div className="flex items-center gap-0.5 opacity-0 group-hover/row:opacity-100 transition-opacity duration-200">
+                    <div
+                      className={`${CELL_LAST} ${rowBase} whitespace-nowrap items-center justify-center hidden sm:flex`}
+                    >
+                      <div className="flex items-center gap-0.5 opacity-0 pointer-events-none group-hover/row:opacity-100 group-hover/row:pointer-events-auto transition-opacity duration-200">
                         <button
                           className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-slate-700/50 transition-all duration-200"
                           onClick={() => onEdit(repair)}
@@ -217,7 +219,7 @@ export default function RepairTable({
           </div>
         )}
         {filteredRepairs.length > 0 && (
-          <div className="border-t border-slate-700/30 px-4 py-3 flex items-center justify-between gap-4">
+          <div className="border-t border-slate-700/30 px-3 sm:px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-2 text-xs text-slate-500">
               <span>Rows per page</span>
               <PageSizeSelect onChange={handlePageSizeChange} value={pageSize} />

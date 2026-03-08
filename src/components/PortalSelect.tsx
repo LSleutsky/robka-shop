@@ -26,8 +26,9 @@ export default function PortalSelect({ options, value, onChange, maxHeight, chil
     }
 
     const rect = buttonRef.current.getBoundingClientRect();
+    const left = Math.min(rect.left, window.innerWidth - rect.width - 8);
 
-    setPosition({ top: rect.top - 6, left: rect.left, width: rect.width });
+    setPosition({ top: rect.top - 6, left: Math.max(8, left), width: rect.width });
   }, []);
 
   useEffect(() => {

@@ -270,6 +270,14 @@ export default function App() {
           filterStatus={filterStatus}
           matchCount={filteredRepairs.length}
           onClearFilter={() => setFilterStatus('all')}
+          onEditSelected={() => {
+            const id = [...selectedIds][0];
+            const repair = repairs.find(rep => rep.id === id);
+
+            if (repair) {
+              openEdit(repair);
+            }
+          }}
           onRemoveSelected={() => requestDelete()}
           onSearchChange={setSearch}
           search={search}

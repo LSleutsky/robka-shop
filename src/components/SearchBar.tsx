@@ -1,4 +1,4 @@
-import { Search, Trash2, X } from 'lucide-react';
+import { Pencil, Search, Trash2, X } from 'lucide-react';
 
 import { STATUS_CONFIG } from '@/config/statuses';
 import { Status } from '@/types';
@@ -12,6 +12,7 @@ interface SearchBarProps {
   totalCount: number;
   onSearchChange: (value: string) => void;
   onClearFilter: () => void;
+  onEditSelected: () => void;
   onRemoveSelected: () => void;
 }
 
@@ -24,13 +25,14 @@ export default function SearchBar({
   totalCount,
   onSearchChange,
   onClearFilter,
+  onEditSelected,
   onRemoveSelected
 }: SearchBarProps) {
   const removeLabel = allSelected ? 'Remove All' : selectedCount === 1 ? 'Remove Row' : 'Remove Rows';
 
   return (
     <div className="pb-4 flex items-center gap-3 flex-wrap">
-      <div className="relative flex-1">
+      <div className="relative flex-1 min-w-0">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
         <input
           className={`w-full bg-slate-800/60 border border-slate-600/30 text-slate-100 pl-10 py-2.5 rounded-xl focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 placeholder-slate-500 transition-all duration-200 hover:border-slate-500/40 shadow-sm shadow-black/20 ${search ? 'pr-9' : 'pr-4'}`}
@@ -60,6 +62,15 @@ export default function SearchBar({
         >
           {STATUS_CONFIG[filterStatus].label}
           <X className="size-4 mt-0.5" />
+        </button>
+      )}
+      {selectedCount === 1 && (
+        <button
+          className="inline-flex items-center gap-1.5 font-semibold text-blue-400 hover:text-blue-300 px-3 py-2 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 ring-1 ring-blue-500/20 transition-all duration-200"
+          onClick={onEditSelected}
+        >
+          <Pencil className="size-3.5" />
+          Edit
         </button>
       )}
       {selectedCount > 0 && (
