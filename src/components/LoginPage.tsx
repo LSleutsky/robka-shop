@@ -9,7 +9,7 @@ interface LoginPageProps {
 }
 
 export default function LoginPage({ onSignIn }: LoginPageProps) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,10 +20,12 @@ export default function LoginPage({ onSignIn }: LoginPageProps) {
     setError('');
     setLoading(true);
 
+    // TODO: if this ever becomes expanded to multiple users, this will need to be updated to actually look up the email based on the username instead of just appending `@gmail.com`
+    const email = `${username.trim().toLowerCase()}@gmail.com`;
     const result = await onSignIn(email, password);
 
     if (result) {
-      setError('Invalid email or password.');
+      setError('Invalid username or password.');
     }
 
     setLoading(false);
@@ -54,18 +56,18 @@ export default function LoginPage({ onSignIn }: LoginPageProps) {
         >
           <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-500/30 to-transparent" />
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider" htmlFor="email">
-              Email
+            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider" htmlFor="username">
+              Username
             </label>
             <input
               autoFocus
-              autoComplete="email"
+              autoComplete="username"
               className={inputBase}
-              id="email"
-              onChange={event => setEmail(event.target.value)}
-              placeholder="you@example.com"
-              type="email"
-              value={email}
+              id="username"
+              onChange={event => setUsername(event.target.value)}
+              placeholder="Enter your username"
+              type="text"
+              value={username}
             />
           </div>
           <div className="space-y-1.5">
@@ -92,7 +94,7 @@ export default function LoginPage({ onSignIn }: LoginPageProps) {
               'shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 hover:brightness-110',
               'disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-600 disabled:shadow-none'
             )}
-            disabled={!email.trim() || !password.trim() || loading}
+            disabled={!username.trim() || !password.trim() || loading}
             type="submit"
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <LogIn className="w-4 h-4" />}
