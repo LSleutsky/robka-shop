@@ -1,10 +1,28 @@
-import { Pencil, Trash2, Loader2, Download } from 'lucide-react';
+import { clsx } from 'clsx';
+import {
+  Pencil,
+  Trash2,
+  Loader2,
+  Download,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight
+} from 'lucide-react';
+import { PropsWithChildren, useState } from 'react';
 
 import EmptyState from '@/components/EmptyState';
+import PageJumpSelect from '@/components/PageJumpSelect';
+import PageSizeSelect from '@/components/PageSizeSelect';
 import StatusBadge from '@/components/StatusBadge';
 
 import { Repair, Status } from '@/types';
 import { formatDate } from '@/utils';
+
+interface PageButtonProps extends PropsWithChildren {
+  disabled: boolean;
+  onClick: () => void;
+}
 
 interface RepairTableProps {
   repairs: Repair[];
@@ -41,6 +59,19 @@ const HEADERS = [
   { label: 'Status', className: CELL }
 ];
 
+const PageButton = ({ disabled, onClick, children }: PageButtonProps) => (
+  <button
+    className={clsx(
+      'p-1.5 rounded-lg transition-colors',
+      disabled ? 'text-slate-700 cursor-not-allowed' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
+    )}
+    disabled={disabled}
+    onClick={onClick}
+  >
+    {children}
+  </button>
+);
+
 export default function RepairTable({
   repairs,
   filteredRepairs,
@@ -53,7 +84,17 @@ export default function RepairTable({
   onStatusChange,
   onExport
 }: RepairTableProps) {
-  const allSelected = filteredRepairs.length > 0 && filteredRepairs.every(repair => selectedIds.has(repair.id));
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState<number>(15);
+
+  const totalRows = filteredRepairs.length;
+  const showAll = pageSize === 0;
+  const totalPages = showAll ? 1 : Math.ceil(totalRows / pageSize);
+  const safePage = Math.min(page, Math.max(totalPages - 1, 0));
+  const start = showAll ? 0 : safePage * pageSize;
+  const end = showAll ? totalRows : Math.min(start + pageSize, totalRows);
+  const pagedRepairs = filteredRepairs.slice(start, end);
+  const allSelected = pagedRepairs.length > 0 && pagedRepairs.every(repair => selectedIds.has(repair.id));
 
   const handleRowClick = (event: React.MouseEvent, id: number) => {
     const target = event.target as HTMLElement;
@@ -65,98 +106,142 @@ export default function RepairTable({
     onToggleSelect(id);
   };
 
+  const handlePageSizeChange = (newSize: number) => {
+    setPageSize(newSize);
+    setPage(0);
+  };
+
   return (
     <div className="pb-8 mt-1">
-      <div className="rounded-2xl border border-slate-700/40 bg-slate-900/50 backdrop-blur-sm shadow-lg shadow-black/20 overflow-x-auto">
+      <div className="rounded-2xl border border-slate-700/40 bg-slate-900/50 backdrop-blur-sm shadow-lg shadow-black/20 overflow-hidden">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-28 text-slate-600">
-            <Loader2 className="size-14 animate-spin text-blue-500/60 mb-3" />
+            <Loader2 className="size-20 animate-spin text-blue-500/60 mb-3" />
             <p className="font-medium">Loading repairs...</p>
           </div>
         ) : filteredRepairs.length === 0 ? (
           <EmptyState hasRepairs={repairs.length > 0} />
         ) : (
-          <div className={`grid ${GRID_COLS} min-w-175`}>
-            <div className={`${CELL_FIRST} ${HEADER_BG}`}>
-              <input
-                checked={allSelected}
-                className="w-3.5 h-3.5 rounded border-slate-600 bg-slate-800 accent-blue-500"
-                onChange={onToggleAll}
-                type="checkbox"
-              />
-            </div>
-            {HEADERS.map(header => (
-              <div
-                key={header.label}
-                className={`${header.className} ${HEADER_BG} text-[11px] font-semibold text-slate-500 uppercase tracking-widest whitespace-nowrap`}
-              >
-                {header.label}
+          <div className="overflow-x-auto" style={{ maxHeight: showAll ? undefined : '800px' }}>
+            <div className={`grid ${GRID_COLS} min-w-175`}>
+              <div className={`${CELL_FIRST} ${HEADER_BG} sticky top-0 z-20`}>
+                <input
+                  checked={allSelected}
+                  className="w-3.5 h-3.5 rounded border-slate-600 bg-slate-800 accent-blue-500"
+                  onChange={onToggleAll}
+                  type="checkbox"
+                />
               </div>
-            ))}
-            <div className={`${CELL_LAST} ${HEADER_BG}`} />
-            {filteredRepairs.map((repair, index) => {
-              const selected = selectedIds.has(repair.id);
-              const stripe = index % 2 === 0 ? ROW_ODD : ROW_EVEN;
-              const rowBase = `border-b border-slate-700/20 transition-colors duration-150 ${ROW_HOVER} ${selected ? ROW_SELECTED : stripe}`;
-
-              return (
+              {HEADERS.map(header => (
                 <div
-                  key={repair.id}
-                  className="group/row contents cursor-pointer select-none"
-                  onClick={event => handleRowClick(event, repair.id)}
+                  key={header.label}
+                  className={`${header.className} ${HEADER_BG} sticky top-0 z-20 text-[11px] font-semibold text-slate-500 uppercase tracking-widest whitespace-nowrap`}
                 >
-                  <div className={`${CELL_FIRST} ${rowBase}`}>
-                    <input
-                      checked={selected}
-                      className="w-3.5 h-3.5 rounded border-slate-600 bg-slate-800 accent-blue-500"
-                      onChange={() => onToggleSelect(repair.id)}
-                      type="checkbox"
-                    />
-                  </div>
-                  <div className={`${CELL} ${rowBase} font-mono whitespace-nowrap`}>
-                    <span className="text-blue-400 font-bold text-xs bg-blue-500/10 px-2 py-1 rounded-md">
-                      {repair.ticket}
-                    </span>
-                  </div>
-                  <div className={`${CELL} ${rowBase} text-slate-500 whitespace-nowrap text-xs`}>
-                    {formatDate(repair.date)}
-                  </div>
-                  <div className={`${CELL} ${rowBase} font-medium text-slate-200`}>{repair.customer}</div>
-                  <div className={`${CELL} ${rowBase} text-slate-400 whitespace-nowrap text-xs font-mono`}>
-                    {repair.phone ?? <span className="text-slate-700">—</span>}
-                  </div>
-                  <div className={`${CELL} ${rowBase} text-slate-300`}>{repair.items.join(', ')}</div>
-                  <div className={`${CELL} ${rowBase} text-slate-500`}>
-                    {repair.specs ?? <span className="text-slate-700">—</span>}
-                  </div>
-                  <div className={`${CELL} ${rowBase} whitespace-nowrap`}>
-                    <StatusBadge
-                      interactive
-                      onChange={(newStatus: Status) => onStatusChange(repair.id, newStatus)}
-                      status={repair.status}
-                    />
-                  </div>
-                  <div className={`${CELL_LAST} ${rowBase} whitespace-nowrap flex items-center justify-center`}>
-                    <div className="flex items-center gap-0.5 opacity-0 group-hover/row:opacity-100 transition-opacity duration-200">
-                      <button
-                        className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-slate-700/50 transition-all duration-200"
-                        onClick={() => onEdit(repair)}
-                        title="Edit"
-                      >
-                        <Pencil className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        className="p-2 rounded-lg text-slate-600 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
-                        onClick={() => onDelete(repair.id)}
-                        title="Delete"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                  {header.label}
+                </div>
+              ))}
+              <div className={`${CELL_LAST} ${HEADER_BG} sticky top-0 z-20`} />
+              {pagedRepairs.map((repair, index) => {
+                const selected = selectedIds.has(repair.id);
+                const stripe = index % 2 === 0 ? ROW_ODD : ROW_EVEN;
+                const rowBase = `border-b border-slate-700/20 transition-colors duration-150 ${ROW_HOVER} ${selected ? ROW_SELECTED : stripe}`;
+
+                return (
+                  <div
+                    key={repair.id}
+                    className="group/row contents cursor-pointer select-none"
+                    onClick={event => handleRowClick(event, repair.id)}
+                  >
+                    <div className={`${CELL_FIRST} ${rowBase}`}>
+                      <input
+                        checked={selected}
+                        className="w-3.5 h-3.5 rounded border-slate-600 bg-slate-800 accent-blue-500"
+                        onChange={() => onToggleSelect(repair.id)}
+                        type="checkbox"
+                      />
+                    </div>
+                    <div className={`${CELL} ${rowBase} font-mono whitespace-nowrap`}>
+                      <span className="text-blue-400 font-bold text-xs bg-blue-500/10 px-2 py-1 rounded-md">
+                        {repair.ticket}
+                      </span>
+                    </div>
+                    <div className={`${CELL} ${rowBase} text-slate-500 whitespace-nowrap text-xs`}>
+                      {formatDate(repair.date)}
+                    </div>
+                    <div className={`${CELL} ${rowBase} font-medium text-slate-200`}>{repair.customer}</div>
+                    <div className={`${CELL} ${rowBase} text-slate-400 whitespace-nowrap text-xs font-mono`}>
+                      {repair.phone ?? <span className="text-slate-700">—</span>}
+                    </div>
+                    <div className={`${CELL} ${rowBase} text-slate-300`}>{repair.items.join(', ')}</div>
+                    <div className={`${CELL} ${rowBase} text-slate-500`}>
+                      {repair.specs ?? <span className="text-slate-700">—</span>}
+                    </div>
+                    <div className={`${CELL} ${rowBase} whitespace-nowrap`}>
+                      <StatusBadge
+                        interactive
+                        onChange={(newStatus: Status) => onStatusChange(repair.id, newStatus)}
+                        status={repair.status}
+                      />
+                    </div>
+                    <div className={`${CELL_LAST} ${rowBase} whitespace-nowrap flex items-center justify-center`}>
+                      <div className="flex items-center gap-0.5 opacity-0 group-hover/row:opacity-100 transition-opacity duration-200">
+                        <button
+                          className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-slate-700/50 transition-all duration-200"
+                          onClick={() => onEdit(repair)}
+                          title="Edit"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          className="p-2 rounded-lg text-slate-600 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
+                          onClick={() => onDelete(repair.id)}
+                          title="Delete"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        {filteredRepairs.length > 0 && (
+          <div className="border-t border-slate-700/30 px-4 py-3 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <span>Rows per page</span>
+              <PageSizeSelect onChange={handlePageSizeChange} value={pageSize} />
+            </div>
+            <div className="flex items-center gap-3 text-xs text-slate-500">
+              <span>
+                {start + 1} - {end} of {totalRows}
+              </span>
+              {totalPages > 1 && (
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <span>Page</span>
+                    <PageJumpSelect onChange={setPage} totalPages={totalPages} value={safePage} />
+                    <span>of {totalPages}</span>
+                  </div>
+                  <div className="h-4 w-px ml-2 bg-slate-700/50" />
+                  <div className="flex items-center gap-1">
+                    <PageButton disabled={safePage === 0} onClick={() => setPage(0)}>
+                      <ChevronsLeft className="size-4" />
+                    </PageButton>
+                    <PageButton disabled={safePage === 0} onClick={() => setPage(safePage - 1)}>
+                      <ChevronLeft className="size-4" />
+                    </PageButton>
+                    <PageButton disabled={safePage >= totalPages - 1} onClick={() => setPage(safePage + 1)}>
+                      <ChevronRight className="size-4" />
+                    </PageButton>
+                    <PageButton disabled={safePage >= totalPages - 1} onClick={() => setPage(totalPages - 1)}>
+                      <ChevronsRight className="size-4" />
+                    </PageButton>
+                  </div>
                 </div>
-              );
-            })}
+              )}
+            </div>
           </div>
         )}
       </div>

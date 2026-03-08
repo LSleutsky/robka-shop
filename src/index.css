@@ -14,7 +14,7 @@ button, select, [role="button"], label {
 }
 
 button:disabled, select:disabled {
-  cursor: not-allowed;
+  cursor: not-allowed !important;
 }
 
 input:not([type="checkbox"]):not([type="radio"]), textarea {
