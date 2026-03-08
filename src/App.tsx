@@ -39,7 +39,13 @@ export default function App() {
   const [form, setForm] = useState<RepairForm>(EMPTY_FORM);
   const [itemsInput, setItemsInput] = useState('');
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
-  const [confirmDelete, setConfirmDelete] = useState<{ ids: number[]; message: string; label: string } | null>(null);
+
+  const [confirmDelete, setConfirmDelete] = useState<{
+    ids: number[];
+    message: string;
+    label: string;
+    tickets?: string[];
+  } | null>(null);
 
   const fetchRepairs = async () => {
     setLoading(true);
@@ -146,10 +152,15 @@ export default function App() {
         label: `Delete ${ticket}`
       });
     } else {
+      const tickets = toDelete
+        .map(id => repairs.find(repair => repair.id === id)?.ticket)
+        .filter((ticket): ticket is string => !!ticket);
+
       setConfirmDelete({
         ids: toDelete,
         message: `Delete ${String(count)} repairs? This cannot be undone.`,
-        label: `Delete ${String(count)} Repairs`
+        label: `Delete ${String(count)} Repairs`,
+        tickets
       });
     }
   };
@@ -257,11 +268,13 @@ export default function App() {
         <SearchBar
           allSelected={allFilteredSelected}
           filterStatus={filterStatus}
+          matchCount={filteredRepairs.length}
           onClearFilter={() => setFilterStatus('all')}
           onRemoveSelected={() => requestDelete()}
           onSearchChange={setSearch}
           search={search}
           selectedCount={selectedIds.size}
+          totalCount={repairs.length}
         />
         {error && (
           <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm flex items-center gap-2">
@@ -300,6 +313,7 @@ export default function App() {
           message={confirmDelete.message}
           onCancel={() => setConfirmDelete(null)}
           onConfirm={() => void deleteRepairs(confirmDelete.ids)}
+          tickets={confirmDelete.tickets}
           title="Confirm Deletion"
         />
       )}

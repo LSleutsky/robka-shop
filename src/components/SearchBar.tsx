@@ -8,6 +8,8 @@ interface SearchBarProps {
   filterStatus: Status | 'all';
   selectedCount: number;
   allSelected: boolean;
+  matchCount: number;
+  totalCount: number;
   onSearchChange: (value: string) => void;
   onClearFilter: () => void;
   onRemoveSelected: () => void;
@@ -18,6 +20,8 @@ export default function SearchBar({
   filterStatus,
   selectedCount,
   allSelected,
+  matchCount,
+  totalCount,
   onSearchChange,
   onClearFilter,
   onRemoveSelected
@@ -44,6 +48,11 @@ export default function SearchBar({
           </button>
         )}
       </div>
+      {search && (
+        <span className="text-slate-500 whitespace-nowrap">
+          {matchCount} of {totalCount}
+        </span>
+      )}
       {filterStatus !== 'all' && (
         <button
           className={`inline-flex items-center gap-1.5 font-semibold px-3 py-2 text-sm rounded-lg ring-1 ring-inset transition-all duration-200 ${STATUS_CONFIG[filterStatus].bg} ${STATUS_CONFIG[filterStatus].text} ${STATUS_CONFIG[filterStatus].ring} hover:brightness-125`}
@@ -55,10 +64,10 @@ export default function SearchBar({
       )}
       {selectedCount > 0 && (
         <button
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-400 hover:text-red-300 px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 ring-1 ring-red-500/20 transition-all duration-200"
+          className="inline-flex items-center gap-1.5 font-semibold text-red-400 hover:text-red-300 px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 ring-1 ring-red-500/20 transition-all duration-200"
           onClick={onRemoveSelected}
         >
-          <Trash2 className="w-3 h-3" />
+          <Trash2 className="size-4 mt-px" />
           {removeLabel}
         </button>
       )}

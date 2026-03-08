@@ -4,11 +4,19 @@ interface ConfirmModalProps {
   title: string;
   message: string;
   confirmLabel: string;
+  tickets?: string[];
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-export default function ConfirmModal({ title, message, confirmLabel, onConfirm, onCancel }: ConfirmModalProps) {
+export default function ConfirmModal({
+  title,
+  message,
+  confirmLabel,
+  tickets,
+  onConfirm,
+  onCancel
+}: ConfirmModalProps) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -27,7 +35,24 @@ export default function ConfirmModal({ title, message, confirmLabel, onConfirm, 
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="text-base font-bold text-white">{title}</h3>
-            <p className="mt-1 text-sm text-slate-400 leading-relaxed">{message}</p>
+            {tickets && tickets.length > 1 ? (
+              <div className="mt-2">
+                <p className="text-sm text-slate-400">Tickets scheduled for deletion:</p>
+                <ul className="mt-2 max-h-21.25 overflow-y-auto space-y-1 rounded-lg bg-slate-800/50 border border-slate-700/30 p-2">
+                  {tickets.map(ticket => (
+                    <li
+                      key={ticket}
+                      className="text-xs font-mono font-bold text-slate-300 bg-slate-700/40 px-2.5 py-1.5 rounded-md"
+                    >
+                      {ticket}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-sm text-slate-500">Are you sure? This cannot be undone.</p>
+              </div>
+            ) : (
+              <p className="mt-1 text-sm text-slate-400 leading-relaxed">{message}</p>
+            )}
           </div>
           <button
             className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-slate-800 transition-all duration-200 shrink-0 self-start"

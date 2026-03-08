@@ -9,7 +9,7 @@ import {
   ChevronsLeft,
   ChevronsRight
 } from 'lucide-react';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 
 import EmptyState from '@/components/EmptyState';
 import PageJumpSelect from '@/components/PageJumpSelect';
@@ -86,6 +86,15 @@ export default function RepairTable({
 }: RepairTableProps) {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState<number>(15);
+  const prevFilteredLength = useRef(filteredRepairs.length);
+
+  useEffect(() => {
+    if (filteredRepairs.length !== prevFilteredLength.current) {
+      prevFilteredLength.current = filteredRepairs.length;
+
+      setPage(0);
+    }
+  }, [filteredRepairs.length]);
 
   const totalRows = filteredRepairs.length;
   const showAll = pageSize === 0;
