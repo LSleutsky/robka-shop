@@ -1,20 +1,15 @@
 import { clsx } from 'clsx';
 import { ChevronDown } from 'lucide-react';
-import { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
 import { STATUSES, STATUS_CONFIG } from '@/config/statuses';
+import usePortalDropdown from '@/hooks/usePortalDropdown';
 import { Status } from '@/types';
 
 interface StatusBadgeProps {
   status: Status;
   interactive?: boolean;
   onChange?: (s: Status) => void;
-}
-
-interface DropdownPosition {
-  top: number;
-  left: number;
 }
 
 const StatusPill = ({ iconClass, status }: { iconClass: string; status: Status }) => {
@@ -30,58 +25,14 @@ const StatusPill = ({ iconClass, status }: { iconClass: string; status: Status }
 };
 
 export default function StatusBadge({ status, interactive, onChange }: StatusBadgeProps) {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState<DropdownPosition>({ top: 0, left: 0 });
+  const { buttonRef, dropdownRef, open, setOpen, position } = usePortalDropdown({
+    width: 140,
+    anchor: 'above',
+    offset: 4,
+    trackScroll: true
+  });
 
   const config = STATUS_CONFIG[status];
-
-  const updatePosition = useCallback(() => {
-    if (!buttonRef.current) {
-      return;
-    }
-
-    const rect = buttonRef.current.getBoundingClientRect();
-    const dropdownWidth = 140;
-    const left = Math.min(rect.left, window.innerWidth - dropdownWidth - 8);
-
-    setPosition({
-      top: rect.top - 4,
-      left: Math.max(8, left)
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    updatePosition();
-
-    const handleClose = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      if (
-        buttonRef.current &&
-        !buttonRef.current.contains(target) &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(target)
-      ) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClose);
-    window.addEventListener('scroll', updatePosition, true);
-    window.addEventListener('resize', updatePosition);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClose);
-      window.removeEventListener('scroll', updatePosition, true);
-      window.removeEventListener('resize', updatePosition);
-    };
-  }, [open, updatePosition]);
 
   const badge = (
     <button

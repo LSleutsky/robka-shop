@@ -1,4 +1,5 @@
 import { AlertTriangle, X } from 'lucide-react';
+import { useEffect } from 'react';
 
 interface ConfirmModalProps {
   title: string;
@@ -17,6 +18,18 @@ export default function ConfirmModal({
   onConfirm,
   onCancel
 }: ConfirmModalProps) {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onCancel();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onCancel]);
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"

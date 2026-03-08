@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 import { Plus, Pencil, X, Loader2, ChevronDown } from 'lucide-react';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import DatePicker from '@/components/DatePicker';
@@ -8,6 +8,7 @@ import Field from '@/components/Field';
 
 import { STATUSES, STATUS_CONFIG } from '@/config/statuses';
 import { inputBase } from '@/constants';
+import usePortalDropdown from '@/hooks/usePortalDropdown';
 import { Repair, RepairForm, Status } from '@/types';
 import { formatPhone } from '@/utils';
 
@@ -23,51 +24,14 @@ interface RepairModalProps {
 }
 
 function StatusSelect({ value, onChange }: { value: Status; onChange: (s: Status) => void }) {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
+  const { buttonRef, dropdownRef, open, setOpen, position } = usePortalDropdown({
+    width: 'match',
+    anchor: 'below',
+    offset: 6
+  });
 
   const config = STATUS_CONFIG[value];
   const Icon = config.icon;
-
-  const updatePosition = useCallback(() => {
-    if (!buttonRef.current) {
-      return;
-    }
-
-    const rect = buttonRef.current.getBoundingClientRect();
-    const left = Math.min(rect.left, window.innerWidth - rect.width - 8);
-
-    setPosition({ top: rect.bottom + 6, left: Math.max(8, left), width: rect.width });
-  }, []);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    updatePosition();
-
-    const handleClose = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      if (
-        buttonRef.current &&
-        !buttonRef.current.contains(target) &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(target)
-      ) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClose);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClose);
-    };
-  }, [open, updatePosition]);
 
   return (
     <>
@@ -142,6 +106,18 @@ export default function RepairModal({
   onClose
 }: RepairModalProps) {
   const canSave = form.ticket.trim() && form.customer.trim() && itemsInput.trim().length > 0 && !saving;
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   return (
     <div

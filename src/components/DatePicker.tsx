@@ -1,11 +1,12 @@
 import { clsx } from 'clsx';
 import { format, parse } from 'date-fns';
 import { CalendarDays } from 'lucide-react';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { DayPicker, UI, DayFlag, SelectionState } from 'react-day-picker';
 import { createPortal } from 'react-dom';
 
 import { inputBase } from '@/constants';
+import usePortalDropdown from '@/hooks/usePortalDropdown';
 
 interface DatePickerProps {
   value: string;
@@ -13,54 +14,22 @@ interface DatePickerProps {
 }
 
 export default function DatePicker({ value, onChange }: DatePickerProps) {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const calendarRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const {
+    buttonRef,
+    dropdownRef: calendarRef,
+    open,
+    setOpen,
+    position
+  } = usePortalDropdown({
+    width: 320,
+    anchor: 'below',
+    offset: 6
+  });
 
   const selected = value ? parse(value, 'yyyy-MM-dd', new Date()) : undefined;
   const today = new Date();
 
   const [month, setMonth] = useState(selected ?? today);
-
-  const updatePosition = useCallback(() => {
-    if (!buttonRef.current) {
-      return;
-    }
-
-    const rect = buttonRef.current.getBoundingClientRect();
-    const calendarWidth = 320;
-    const left = Math.min(rect.left, window.innerWidth - calendarWidth - 8);
-
-    setPosition({ top: rect.bottom + 6, left: Math.max(8, left) });
-  }, []);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    updatePosition();
-
-    const handleClose = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      if (
-        buttonRef.current &&
-        !buttonRef.current.contains(target) &&
-        calendarRef.current &&
-        !calendarRef.current.contains(target)
-      ) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClose);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClose);
-    };
-  }, [open, updatePosition]);
 
   return (
     <>

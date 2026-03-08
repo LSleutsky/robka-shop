@@ -1,6 +1,8 @@
 import { clsx } from 'clsx';
-import { PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import { createPortal } from 'react-dom';
+
+import usePortalDropdown from '@/hooks/usePortalDropdown';
 
 interface Option {
   value: number;
@@ -15,48 +17,11 @@ interface PortalSelectProps extends PropsWithChildren {
 }
 
 export default function PortalSelect({ options, value, onChange, maxHeight, children }: PortalSelectProps) {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
-
-  const updatePosition = useCallback(() => {
-    if (!buttonRef.current) {
-      return;
-    }
-
-    const rect = buttonRef.current.getBoundingClientRect();
-    const left = Math.min(rect.left, window.innerWidth - rect.width - 8);
-
-    setPosition({ top: rect.top - 6, left: Math.max(8, left), width: rect.width });
-  }, []);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    updatePosition();
-
-    const handleClose = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      if (
-        buttonRef.current &&
-        !buttonRef.current.contains(target) &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(target)
-      ) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClose);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClose);
-    };
-  }, [open, updatePosition]);
+  const { buttonRef, dropdownRef, open, setOpen, position } = usePortalDropdown({
+    width: 'match',
+    anchor: 'above',
+    offset: 6
+  });
 
   return (
     <>
