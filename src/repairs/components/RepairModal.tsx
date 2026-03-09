@@ -7,10 +7,11 @@ import DatePicker from '@/repairs/components/DatePicker';
 import Field from '@/repairs/components/Field';
 
 import { STATUSES, STATUS_CONFIG } from '@/repairs/config/statuses';
-import { inputBase } from '@/repairs/constants';
 import usePortalDropdown from '@/repairs/hooks/usePortalDropdown';
 import { Repair, RepairForm, Status } from '@/repairs/types';
 import { formatPhone } from '@/repairs/utils';
+
+import { inputBase } from '@/constants';
 
 interface RepairModalProps {
   form: RepairForm;

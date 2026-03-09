@@ -11,6 +11,8 @@ if (!rootElement) {
 
 const isRepairs = window.location.hostname.startsWith('repairs.');
 
+document.title = isRepairs ? 'Repair Tracker' : 'Robka Shop';
+
 const app = isRepairs
   ? import('@/repairs/Root').then(module => module.default)
   : import('@/site/App').then(module => module.default);
