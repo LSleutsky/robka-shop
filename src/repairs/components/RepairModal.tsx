@@ -3,14 +3,14 @@ import { Plus, Pencil, X, Loader2, ChevronDown } from 'lucide-react';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-import DatePicker from '@/components/DatePicker';
-import Field from '@/components/Field';
+import DatePicker from '@/repairs/components/DatePicker';
+import Field from '@/repairs/components/Field';
 
-import { STATUSES, STATUS_CONFIG } from '@/config/statuses';
-import { inputBase } from '@/constants';
-import usePortalDropdown from '@/hooks/usePortalDropdown';
-import { Repair, RepairForm, Status } from '@/types';
-import { formatPhone } from '@/utils';
+import { STATUSES, STATUS_CONFIG } from '@/repairs/config/statuses';
+import { inputBase } from '@/repairs/constants';
+import usePortalDropdown from '@/repairs/hooks/usePortalDropdown';
+import { Repair, RepairForm, Status } from '@/repairs/types';
+import { formatPhone } from '@/repairs/utils';
 
 interface RepairModalProps {
   form: RepairForm;

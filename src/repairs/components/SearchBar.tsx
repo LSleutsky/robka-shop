@@ -1,7 +1,7 @@
 import { Pencil, Search, Trash2, X } from 'lucide-react';
 
-import { STATUS_CONFIG } from '@/config/statuses';
-import { Status } from '@/types';
+import { STATUS_CONFIG } from '@/repairs/config/statuses';
+import { Status } from '@/repairs/types';
 
 interface SearchBarProps {
   search: string;

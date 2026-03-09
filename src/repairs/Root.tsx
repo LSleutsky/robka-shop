@@ -1,9 +1,9 @@
 import { Loader2 } from 'lucide-react';
 
-import App from '@/App';
+import App from '@/repairs/App';
 
-import LoginPage from '@/components/LoginPage';
-import useAuth from '@/hooks/useAuth';
+import LoginPage from '@/repairs/components/LoginPage';
+import useAuth from '@/repairs/hooks/useAuth';
 
 export default function Root() {
   const { session, loading, signIn, signOut } = useAuth();

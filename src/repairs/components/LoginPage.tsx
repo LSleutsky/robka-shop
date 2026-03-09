@@ -2,7 +2,7 @@ import { clsx } from 'clsx';
 import { Anvil, Loader2, LogIn } from 'lucide-react';
 import { SubmitEvent, useState } from 'react';
 
-import { inputBase } from '@/constants';
+import { inputBase } from '@/repairs/constants';
 
 interface LoginPageProps {
   onSignIn: (email: string, password: string) => Promise<{ message: string } | null>;

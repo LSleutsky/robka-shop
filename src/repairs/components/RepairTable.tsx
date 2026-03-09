@@ -11,13 +11,13 @@ import {
 } from 'lucide-react';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 
-import EmptyState from '@/components/EmptyState';
-import PageJumpSelect from '@/components/PageJumpSelect';
-import PageSizeSelect from '@/components/PageSizeSelect';
-import StatusBadge from '@/components/StatusBadge';
+import EmptyState from '@/repairs/components/EmptyState';
+import PageJumpSelect from '@/repairs/components/PageJumpSelect';
+import PageSizeSelect from '@/repairs/components/PageSizeSelect';
+import StatusBadge from '@/repairs/components/StatusBadge';
 
-import { Repair, Status } from '@/types';
-import { formatDate } from '@/utils';
+import { Repair, Status } from '@/repairs/types';
+import { formatDate } from '@/repairs/utils';
 
 interface PageButtonProps extends PropsWithChildren {
   disabled: boolean;

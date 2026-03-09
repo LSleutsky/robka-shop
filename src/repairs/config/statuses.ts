@@ -1,5 +1,5 @@
 import { Clock, CircleDot, CheckCircle2, PackageCheck } from 'lucide-react';
-import type { Status } from '@/types';
+import type { Status } from '@/repairs/types';
 
 export interface StatusConfig {
   label: string;

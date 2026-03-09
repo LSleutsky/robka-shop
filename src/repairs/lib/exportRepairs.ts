@@ -1,7 +1,7 @@
 import ExcelJS from 'exceljs';
 
-import { formatDate } from '@/utils';
-import { Repair } from '@/types';
+import { formatDate } from '@/repairs/utils';
+import { Repair } from '@/repairs/types';
 
 const COLUMNS: Partial<ExcelJS.Column>[] = [
   { header: 'Ticket', key: 'ticket', width: 14 },

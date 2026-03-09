@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 
-import { STATUSES, STATUS_CONFIG } from '@/config/statuses';
-import { Status } from '@/types';
+import { STATUSES, STATUS_CONFIG } from '@/repairs/config/statuses';
+import { Status } from '@/repairs/types';
 
 interface StatsBarProps {
   counts: Record<Status, number>;

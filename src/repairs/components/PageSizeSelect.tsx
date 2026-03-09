@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { ChevronRight } from 'lucide-react';
 
-import PortalSelect from '@/components/PortalSelect';
+import PortalSelect from '@/repairs/components/PortalSelect';
 
 interface PageSizeSelectProps {
   value: number;

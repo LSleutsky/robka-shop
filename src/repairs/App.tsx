@@ -1,17 +1,17 @@
 import { X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-import ConfirmModal from '@/components/ConfirmModal';
-import Header from '@/components/Header';
-import RepairModal from '@/components/RepairModal';
-import RepairTable from '@/components/RepairTable';
-import SearchBar from '@/components/SearchBar';
-import StatsBar from '@/components/StatsBar';
+import ConfirmModal from '@/repairs/components/ConfirmModal';
+import Header from '@/repairs/components/Header';
+import RepairModal from '@/repairs/components/RepairModal';
+import RepairTable from '@/repairs/components/RepairTable';
+import SearchBar from '@/repairs/components/SearchBar';
+import StatsBar from '@/repairs/components/StatsBar';
 
-import { STATUSES } from '@/config/statuses';
-import { exportRepairs } from '@/lib/exportRepairs';
-import { supabase } from '@/lib/supabase';
-import { Repair, RepairForm, Status } from '@/types';
+import { STATUSES } from '@/repairs/config/statuses';
+import { exportRepairs } from '@/repairs/lib/exportRepairs';
+import { supabase } from '@/repairs/lib/supabase';
+import { Repair, RepairForm, Status } from '@/repairs/types';
 
 interface AppProps {
   onSignOut: () => void;

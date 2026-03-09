@@ -1,5 +1,5 @@
 {
-  "name": "repair-tracker",
+  "name": "robka-shop",
   "private": true,
   "version": "1.0.0",
   "author": "Lush Sleutsky <LushSleutsky@gmail.com>",
@@ -21,7 +21,8 @@
     "lucide-react": "^0.577.0",
     "react": "^19.2.4",
     "react-day-picker": "^9.14.0",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "react-router": "^7.13.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

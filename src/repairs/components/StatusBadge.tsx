@@ -2,9 +2,9 @@ import { clsx } from 'clsx';
 import { ChevronDown } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
-import { STATUSES, STATUS_CONFIG } from '@/config/statuses';
-import usePortalDropdown from '@/hooks/usePortalDropdown';
-import { Status } from '@/types';
+import { STATUSES, STATUS_CONFIG } from '@/repairs/config/statuses';
+import usePortalDropdown from '@/repairs/hooks/usePortalDropdown';
+import { Status } from '@/repairs/types';
 
 interface StatusBadgeProps {
   status: Status;

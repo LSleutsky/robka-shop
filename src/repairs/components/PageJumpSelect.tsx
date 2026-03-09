@@ -1,7 +1,7 @@
 import { ChevronsUpDown } from 'lucide-react';
 import { useMemo } from 'react';
 
-import PortalSelect from '@/components/PortalSelect';
+import PortalSelect from '@/repairs/components/PortalSelect';
 
 interface PageJumpSelectProps {
   value: number;
