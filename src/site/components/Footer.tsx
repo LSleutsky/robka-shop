@@ -1,7 +1,7 @@
-import { Gem } from 'lucide-react';
 import { Link } from 'react-router';
 
 import InstagramIcon from '@/site/components/InstagramIcon';
+import Logo from '@/site/components/Logo';
 
 export default function Footer() {
   return (
@@ -10,12 +10,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
           <div>
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-7 h-7 rounded-lg bg-linear-to-br from-blue-500 to-violet-600 flex items-center justify-center">
-                <Gem className="size-4 text-white" strokeWidth={2.5} />
-              </div>
-              <span className="text-base font-bold tracking-tight text-white font-mono">Robka Shop</span>
-            </div>
+            <Logo className="h-14 sm:h-16 w-auto mb-4" color="#cbd5e1" />
             <p className="text-slate-500 text-sm leading-relaxed">
               Hand crafted fine jewelry and great finds since 1987.
             </p>
