@@ -1,6 +1,8 @@
 import { ArrowRight, Gem, Shield, Sparkles, Wrench } from 'lucide-react';
 import { Link } from 'react-router';
 
+import Logo from '@/site/components/Logo';
+
 const highlights = [
   {
     icon: Gem,
@@ -37,13 +39,8 @@ export default function Home() {
           <div className="flex flex-col items-center text-center">
             <div className="relative group mb-8">
               <div className="absolute inset-0 bg-linear-to-br from-blue-500 to-violet-600 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
-              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-linear-to-br from-blue-500 to-violet-600 flex items-center justify-center shadow-lg">
-                <Gem className="size-10 sm:size-13 text-white" strokeWidth={1.5} />
-              </div>
             </div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white font-mono leading-tight">
-              Robka Shop
-            </h1>
+            <Logo className="w-full max-w-sm sm:max-w-xl" />
             <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-slate-400 max-w-xl leading-relaxed">
               Hand crafted fine jewelry and great finds. Serving customers with expert craftsmanship since 1987.
             </p>
@@ -97,7 +94,7 @@ export default function Home() {
               Looking for something special?
             </h2>
             <p className="mt-3 text-slate-400 text-base sm:text-lg max-w-lg mx-auto">
-              Whether it is a custom piece, a vintage find, or expert repair work — reach out and let us help.
+              Whether it is a custom piece, a vintage find, or expert repair work - reach out and let us help.
             </p>
             <Link
               className="inline-flex items-center gap-2 mt-6 px-6 py-3 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-violet-600 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300 active:scale-[0.97]"

@@ -1,6 +1,8 @@
 import { clsx } from 'clsx';
-import { Camera, MapPin, Send } from 'lucide-react';
+import { MapPin, Send } from 'lucide-react';
 import { SubmitEvent, useState } from 'react';
+
+import InstagramIcon from '@/site/components/InstagramIcon';
 
 import { inputBase } from '@/constants';
 
@@ -25,7 +27,6 @@ export default function Contact() {
         <div className="absolute -top-48 left-1/4 w-150 h-150 bg-blue-600/4 rounded-full blur-[120px]" />
         <div className="absolute -top-48 right-1/4 w-150 h-150 bg-violet-600/3 rounded-full blur-[120px]" />
       </div>
-
       <section className="relative">
         <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-500/20 to-transparent" />
 
@@ -162,7 +163,7 @@ export default function Contact() {
               </div>
               <div className="rounded-2xl border border-slate-700/30 bg-slate-900/30 p-6 sm:p-7">
                 <div className="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700/40 flex items-center justify-center mb-4">
-                  <Camera className="size-5 text-slate-400" />
+                  <InstagramIcon className="size-5 text-slate-400" />
                 </div>
                 <h3 className="text-base font-semibold text-white mb-1.5">Instagram</h3>
                 <a

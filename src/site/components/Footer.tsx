@@ -1,5 +1,7 @@
-import { Gem, Camera } from 'lucide-react';
+import { Gem } from 'lucide-react';
 import { Link } from 'react-router';
+
+import InstagramIcon from '@/site/components/InstagramIcon';
 
 export default function Footer() {
   return (
@@ -18,7 +20,6 @@ export default function Footer() {
               Hand crafted fine jewelry and great finds since 1987.
             </p>
           </div>
-
           <div>
             <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Navigation</h3>
             <div className="space-y-2.5">
@@ -45,7 +46,6 @@ export default function Footer() {
               </Link>
             </div>
           </div>
-
           <div>
             <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Connect</h3>
             <a
@@ -54,12 +54,11 @@ export default function Footer() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <Camera className="size-4" />
+              <InstagramIcon className="size-4" />
               @robs.place
             </a>
           </div>
         </div>
-
         <div className="mt-12 pt-8 border-t border-slate-800/60">
           <p className="text-xs text-slate-600 text-center">Robka Shop. All rights reserved.</p>
         </div>

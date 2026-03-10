@@ -1,7 +1,9 @@
 import { clsx } from 'clsx';
-import { Gem, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router';
+
+import Logo from '@/site/components/Logo';
 
 const links = [
   { to: '/', label: 'Home' },
@@ -19,15 +21,13 @@ export default function Navbar() {
       <div className="absolute inset-0 bg-[#050810]/80 backdrop-blur-xl border-b border-slate-700/30" />
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 sm:h-18">
-          <Link className="flex items-center gap-2.5 group" onClick={() => setOpen(false)} to="/">
-            <div className="relative">
-              <div className="absolute inset-0 bg-linear-to-br from-blue-500 to-violet-600 rounded-lg blur-md opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
-              <div className="relative w-8 h-8 rounded-lg bg-linear-to-br from-blue-500 to-violet-600 flex items-center justify-center">
-                <Gem className="size-4.5 text-white" strokeWidth={2.5} />
-              </div>
-            </div>
-            <span className="text-lg font-bold tracking-tight text-white font-mono">Robka Shop</span>
-          </Link>
+          {pathname !== '/' ? (
+            <Link className="block" onClick={() => setOpen(false)} to="/">
+              <Logo className="h-16 sm:h-18 w-auto" color="#cbd5e1" />
+            </Link>
+          ) : (
+            <div />
+          )}
           <div className="hidden sm:flex items-center gap-1">
             {links.map(link => (
               <Link

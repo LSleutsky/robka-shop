@@ -1,6 +1,8 @@
 import { clsx } from 'clsx';
-import { Anvil, Loader2, LogIn } from 'lucide-react';
+import { Loader2, LogIn } from 'lucide-react';
 import { SubmitEvent, useState } from 'react';
+
+import Logo from '@/site/components/Logo';
 
 import { inputBase } from '@/constants';
 
@@ -40,14 +42,8 @@ export default function LoginPage({ onSignIn }: LoginPageProps) {
       </div>
       <div className="relative w-full max-w-sm">
         <div className="flex flex-col items-center mb-8">
-          <div className="relative group mb-4">
-            <div className="absolute inset-0 bg-linear-to-br from-blue-500 to-violet-600 rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
-            <div className="relative w-16 h-16 rounded-2xl bg-linear-to-br from-blue-500 to-violet-600 flex items-center justify-center shadow-lg">
-              <Anvil className="size-9 text-white" strokeWidth={2.5} />
-            </div>
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white font-mono">Rob's Place</h1>
-          <h1 className="text-2xl font-bold tracking-tight text-white font-mono">Repair Tracker</h1>
+          <Logo />
+          <h1 className="text-4xl font-bold tracking-tight text-white font-mono">Repair Tracker</h1>
           <p className="text-slate-500 font-medium text-sm mt-1">Sign in to continue</p>
         </div>
         <form
