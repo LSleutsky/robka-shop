@@ -1,3 +1,4 @@
+import { Copyright } from 'lucide-react';
 import { Link } from 'react-router';
 
 import InstagramIcon from '@/site/components/InstagramIcon';
@@ -10,7 +11,9 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
           <div>
-            <Logo className="h-14 sm:h-16 w-auto mb-4" color="#cbd5e1" />
+            <Link to="/">
+              <Logo className="h-14 sm:h-16 w-auto mb-4" color="#cbd5e1" />
+            </Link>
             <p className="text-slate-500 text-sm leading-relaxed">
               Hand crafted fine jewelry and great finds since 1987.
             </p>
@@ -55,7 +58,10 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-slate-800/60">
-          <p className="text-xs text-slate-600 text-center">Robka Shop. All rights reserved.</p>
+          <p className="text-xs text-slate-600 text-center">
+            <Copyright className="inline size-4 -mt-0.5 mr-0.5" /> {new Date().getFullYear()} Robka Shop. All rights
+            reserved.
+          </p>
         </div>
       </div>
     </footer>

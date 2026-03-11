@@ -47,7 +47,7 @@ const services = [
     icon: PenTool,
     title: 'Engravings',
     description:
-      'Add a personal touch with custom engraving — from meaningful messages to intricate designs on any piece.'
+      'Add a personal touch with custom engraving - from meaningful messages to intricate designs on any piece.'
   },
   {
     icon: FileText,

@@ -20,7 +20,7 @@ const milestones = [
     year: '2001',
     title: 'Golden Nugget',
     description:
-      'Established a comprehensive jewelry service within the Golden Nugget Antique Market in Lambertville, New Jersey — serving customers ever since.'
+      'Established a comprehensive jewelry service within the Golden Nugget Antique Market in Lambertville, New Jersey - serving customers ever since.'
   },
   {
     icon: Clock,
@@ -50,7 +50,7 @@ export default function About() {
           <div className="max-w-2xl">
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white font-mono">About</h1>
             <p className="mt-4 sm:mt-6 text-lg text-slate-400 leading-relaxed">
-              Hand crafted fine jewelry and great finds — built on decades of expertise passed down from the finest
+              Hand crafted fine jewelry and great finds - built on decades of expertise passed down from the finest
               craftsmen in the trade.
             </p>
           </div>

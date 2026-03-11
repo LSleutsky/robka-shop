@@ -53,25 +53,28 @@ export default function Navbar() {
         </div>
       </div>
       {open && (
-        <div className="sm:hidden relative bg-[#050810]/95 backdrop-blur-xl border-b border-slate-700/30">
-          <div className="px-4 py-3 space-y-1">
-            {links.map(link => (
-              <Link
-                key={link.to}
-                className={clsx(
-                  'block px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
-                  pathname === link.to
-                    ? 'text-white bg-slate-800/80'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/40'
-                )}
-                onClick={() => setOpen(false)}
-                to={link.to}
-              >
-                {link.label}
-              </Link>
-            ))}
+        <>
+          <div className="sm:hidden fixed inset-0 top-16" onClick={() => setOpen(false)} />
+          <div className="sm:hidden relative bg-[#050810]/95 backdrop-blur-xl border-b border-slate-700/30">
+            <div className="px-4 py-3 space-y-1">
+              {links.map(link => (
+                <Link
+                  key={link.to}
+                  className={clsx(
+                    'block px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
+                    pathname === link.to
+                      ? 'text-white bg-slate-800/80'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/40'
+                  )}
+                  onClick={() => setOpen(false)}
+                  to={link.to}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </nav>
   );

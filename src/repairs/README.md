@@ -16,7 +16,7 @@ The app requires signing in before use. Enter your username and password on the 
 ## Managing Repairs
 
 - **Edit** a repair by hovering over a row and clicking the pencil icon, or by selecting a single row and clicking the `Edit` button near the search bar
-- **Delete** a repair by hovering over a row and clicking the trash icon — you'll be asked to confirm
+- **Delete** a repair by hovering over a row and clicking the trash icon - you'll be asked to confirm
 - **Change status** directly from the table by clicking the status badge on any row and selecting from the dropdown
 
 On mobile, in-row edit/delete icons are hidden. Use the `Edit` and `Remove Row` buttons that appear near the search bar when rows are selected.
@@ -37,13 +37,13 @@ When a repair is marked as `Picked Up`, the pickup date is recorded automaticall
 - Click any status card at the top to filter the table to that status.
   - Click the pill next to the search bar to clear the filter.
 - Type in the search bar to search across ticket IDs, customer names, items, and specs. A match count (*X of Y*) is displayed next to the search input.
-- Search results span all pages — pagination resets to page 1 when the search query or status filter changes.
+- Search results span all pages - pagination resets to page 1 when the search query or status filter changes.
 
 ## Pagination
 
-- **Rows per page** — select how many rows to show per page (*15, 25, 50, 75, or all*) via the dropdown in the table footer.
-- **Page navigation** — use the left/right arrows to move between pages, or the first/last page buttons to jump to either end.
-- **Jump to page** — use the page selector dropdown to jump directly to any page.
+- **Rows per page** - select how many rows to show per page (*15, 25, 50, 75, or all*) via the dropdown in the table footer.
+- **Page navigation** - use the left/right arrows to move between pages, or the first/last page buttons to jump to either end.
+- **Jump to page** - use the page selector dropdown to jump directly to any page.
 
 ## Bulk Actions
 
