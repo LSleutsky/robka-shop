@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <>
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-48 left-1/4 w-150 h-150 bg-blue-600/4 rounded-full blur-[120px]" />
           <div className="absolute -top-48 right-1/4 w-150 h-150 bg-violet-600/3 rounded-full blur-[120px]" />
           <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-500/20 to-transparent" />
@@ -85,7 +85,7 @@ export default function Home() {
         </div>
       </section>
       <section className="relative">
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute bottom-0 left-1/3 w-120 h-120 bg-violet-600/3 rounded-full blur-[100px]" />
         </div>
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">

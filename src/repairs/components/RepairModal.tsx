@@ -9,7 +9,7 @@ import Field from '@/repairs/components/Field';
 import { STATUSES, STATUS_CONFIG } from '@/repairs/config/statuses';
 import usePortalDropdown from '@/repairs/hooks/usePortalDropdown';
 import { Repair, RepairForm, Status } from '@/repairs/types';
-import { formatPhone } from '@/repairs/utils';
+import { formatPhone } from '@/utils';
 
 import { inputBase } from '@/constants';
 

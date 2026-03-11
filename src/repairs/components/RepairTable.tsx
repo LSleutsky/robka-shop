@@ -17,7 +17,7 @@ import PageSizeSelect from '@/repairs/components/PageSizeSelect';
 import StatusBadge from '@/repairs/components/StatusBadge';
 
 import { Repair, Status } from '@/repairs/types';
-import { formatDate } from '@/repairs/utils';
+import { formatDate } from '@/utils';
 
 interface PageButtonProps extends PropsWithChildren {
   disabled: boolean;

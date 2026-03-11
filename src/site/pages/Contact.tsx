@@ -1,29 +1,61 @@
 import { clsx } from 'clsx';
 import { MapPin, Send } from 'lucide-react';
-import { SubmitEvent, useState } from 'react';
+import { ChangeEvent, SubmitEvent, useState } from 'react';
 
 import InstagramIcon from '@/site/components/InstagramIcon';
 
 import { inputBase } from '@/constants';
+import { capitalizeFirst, capitalizeWords, formatPhone } from '@/utils';
 
 export default function Contact() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
 
-  const canSubmit = name.trim() && email.trim() && message.trim();
+  const canSubmit = name.trim() && email.trim() && phone.trim() && subject.trim() && !sending;
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: SubmitEvent) => {
     event.preventDefault();
-    // TODO: integrate with a form service or email API
-    setSent(true);
+
+    setSending(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, subject, message })
+      });
+
+      if (!response.ok) {
+        const data = (await response.json()) as { error?: string };
+
+        throw new Error(data.error ?? 'Failed to send message');
+      }
+
+      setSent(true);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
+
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => setName(capitalizeWords(event.target.value));
+  const handleSubjectChange = (event: ChangeEvent<HTMLInputElement>) => setSubject(capitalizeWords(event.target.value));
+  const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => setPhone(formatPhone(event.target.value));
+
+  const handleMessageChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
+    setMessage(capitalizeFirst(event.target.value));
 
   return (
     <>
-      <div className="fixed inset-0 pointer-events-none">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-48 left-1/4 w-150 h-150 bg-blue-600/4 rounded-full blur-[120px]" />
         <div className="absolute -top-48 right-1/4 w-150 h-150 bg-violet-600/3 rounded-full blur-[120px]" />
       </div>
@@ -48,7 +80,7 @@ export default function Contact() {
                   <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-4">
                     <Send className="size-5 text-emerald-400" />
                   </div>
-                  <h2 className="text-xl font-semibold text-white mb-2">Message Sent</h2>
+                  <h2 className="text-xl font-semibold text-white mb-2">Message Sent!</h2>
                   <p className="text-slate-400 text-sm">Thank you for reaching out. We will get back to you soon.</p>
                   <button
                     className="mt-6 px-5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-white border border-slate-700/40 hover:border-slate-600/60 transition-all duration-200"
@@ -56,6 +88,7 @@ export default function Contact() {
                       setSent(false);
                       setName('');
                       setEmail('');
+                      setPhone('');
                       setSubject('');
                       setMessage('');
                     }}
@@ -66,7 +99,7 @@ export default function Contact() {
               ) : (
                 <form
                   className="rounded-2xl border border-slate-700/30 bg-slate-900/30 p-6 sm:p-8"
-                  onSubmit={event => handleSubmit(event)}
+                  onSubmit={handleSubmit}
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     <div className="space-y-1.5">
@@ -74,12 +107,12 @@ export default function Contact() {
                         className="block text-xs font-semibold text-slate-400 uppercase tracking-wider"
                         htmlFor="name"
                       >
-                        Name
+                        Name *
                       </label>
                       <input
                         className={inputBase}
                         id="name"
-                        onChange={event => setName(event.target.value)}
+                        onChange={handleNameChange}
                         placeholder="Your name"
                         type="text"
                         value={name}
@@ -90,7 +123,7 @@ export default function Contact() {
                         className="block text-xs font-semibold text-slate-400 uppercase tracking-wider"
                         htmlFor="email"
                       >
-                        Email
+                        Email *
                       </label>
                       <input
                         className={inputBase}
@@ -102,37 +135,56 @@ export default function Contact() {
                       />
                     </div>
                   </div>
-                  <div className="mt-4 sm:mt-5 space-y-1.5">
-                    <label
-                      className="block text-xs font-semibold text-slate-400 uppercase tracking-wider"
-                      htmlFor="subject"
-                    >
-                      Subject
-                    </label>
-                    <input
-                      className={inputBase}
-                      id="subject"
-                      onChange={event => setSubject(event.target.value)}
-                      placeholder="What is this about?"
-                      type="text"
-                      value={subject}
-                    />
+                  <div className="mt-4 sm:mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <div className="space-y-1.5">
+                      <label
+                        className="block text-xs font-semibold text-slate-400 uppercase tracking-wider"
+                        htmlFor="phone"
+                      >
+                        Phone *
+                      </label>
+                      <input
+                        className={inputBase}
+                        id="phone"
+                        onChange={handlePhoneChange}
+                        placeholder="(555) 123-4567"
+                        type="tel"
+                        value={phone}
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label
+                        className="block text-xs font-semibold text-slate-400 uppercase tracking-wider"
+                        htmlFor="subject"
+                      >
+                        Subject
+                      </label>
+                      <input
+                        className={inputBase}
+                        id="subject"
+                        onChange={handleSubjectChange}
+                        placeholder="What is this about?"
+                        type="text"
+                        value={subject}
+                      />
+                    </div>
                   </div>
                   <div className="mt-4 sm:mt-5 space-y-1.5">
                     <label
                       className="block text-xs font-semibold text-slate-400 uppercase tracking-wider"
                       htmlFor="message"
                     >
-                      Message
+                      Message *
                     </label>
                     <textarea
                       className={clsx(inputBase, 'min-h-36 resize-y')}
                       id="message"
-                      onChange={event => setMessage(event.target.value)}
+                      onChange={handleMessageChange}
                       placeholder="Tell us what you need..."
                       value={message}
                     />
                   </div>
+                  {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
                   <button
                     className={clsx(
                       'mt-6 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold rounded-xl border border-transparent transition-all duration-300',
@@ -144,7 +196,7 @@ export default function Contact() {
                     type="submit"
                   >
                     <Send className="w-4 h-4" />
-                    Send Message
+                    {sending ? 'Sending...' : 'Send Message'}
                   </button>
                 </form>
               )}

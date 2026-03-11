@@ -13,7 +13,7 @@ const MONTHS = [
   'December'
 ];
 
-export const ordinal = (number: number): string => {
+const ordinal = (number: number): string => {
   const remainder = number % 100;
 
   if (remainder >= 11 && remainder <= 13) {
@@ -32,10 +32,14 @@ export const ordinal = (number: number): string => {
   }
 };
 
-export const formatDate = (dateString: string): string => {
-  const [year, month, day] = dateString.split('-').map(Number);
+export const capitalizeWords = (value: string): string => {
+  return value.replace(/\b\w/g, char => char.toUpperCase());
+};
 
-  return `${MONTHS[month - 1]} ${ordinal(day)}, ${String(year)}`;
+export const capitalizeFirst = (value: string): string => {
+  if (!value) return value;
+
+  return value.charAt(0).toUpperCase() + value.slice(1);
 };
 
 export const formatPhone = (value: string): string => {
@@ -54,4 +58,10 @@ export const formatPhone = (value: string): string => {
   }
 
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+};
+
+export const formatDate = (dateString: string): string => {
+  const [year, month, day] = dateString.split('-').map(Number);
+
+  return `${MONTHS[month - 1]} ${ordinal(day)}, ${String(year)}`;
 };

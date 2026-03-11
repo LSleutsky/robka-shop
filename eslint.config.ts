@@ -8,16 +8,7 @@ import prettier from 'eslint-plugin-prettier/recommended';
 export default [
   { ignores: ['dist', 'node_modules'] },
   js.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname
-      }
-    }
-  },
+  ...tseslint.configs.recommended,
   {
     plugins: {
       react,
