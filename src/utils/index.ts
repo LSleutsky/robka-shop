@@ -70,3 +70,27 @@ export const formatCurrency = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD'
 });
+
+export const getMetalsCalculations = (gold: number, silver: number, platinum: number) => [
+  { name: '6K', value: (gold * 0.87 * 0.25) / 20 },
+  { name: '8K', value: (gold * 0.87 * 0.31) / 20 },
+  { name: '9K', value: (gold * 0.87 * 0.325) / 20 },
+  { name: '10K', value: (gold * 0.87 * 0.396) / 20 },
+  { name: '12K', value: (gold * 0.87 * 0.48) / 20 },
+  { name: '14K', value: (gold * 0.87 * 0.565) / 20 },
+  { name: '16K', value: (gold * 0.87 * 0.642) / 20 },
+  { name: '18K', value: (gold * 0.87 * 0.73) / 20 + 0.1 },
+  { name: '20K', value: (gold * 0.87 * 0.794) / 20 },
+  { name: '21K', value: (gold * 0.87 * 0.854) / 20 },
+  { name: '22K', value: (gold * 0.9 * 0.87) / 20 },
+  { name: '24K', value: (gold * 0.99 * 0.87) / 20 },
+  { name: 'American Coins | 1838 - 1933 (per coin)', value: gold * 0.96 * 0.95 - 50 },
+  { name: 'American Coins | 1986 - present', value: gold * 0.99 * 0.95 - 50 },
+  { name: 'Sterling', value: silver * 0.8 },
+  { name: 'Pure Silver', value: silver * 0.87 },
+  { name: 'Coin Silver', value: silver * 0.675 },
+  { name: '800 Silver', value: silver * 0.61 },
+  { name: 'Silver Dollar', value: silver * 0.77 },
+  { name: 'Silver Change ($1 face)', value: silver * 0.717 },
+  { name: 'Platinum', value: (platinum * 0.68) / 20 }
+];

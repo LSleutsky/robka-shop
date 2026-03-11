@@ -9,30 +9,6 @@ interface MetalsData {
   platinum: number;
 }
 
-const getCalculations = (gold: number, silver: number, platinum: number) => [
-  { name: '6K', value: (gold * 0.87 * 0.25) / 20 },
-  { name: '8K', value: (gold * 0.87 * 0.31) / 20 },
-  { name: '9K', value: (gold * 0.87 * 0.325) / 20 },
-  { name: '10K', value: (gold * 0.87 * 0.396) / 20 },
-  { name: '12K', value: (gold * 0.87 * 0.48) / 20 },
-  { name: '14K', value: (gold * 0.87 * 0.565) / 20 },
-  { name: '16K', value: (gold * 0.87 * 0.642) / 20 },
-  { name: '18K', value: (gold * 0.87 * 0.73) / 20 + 0.1 },
-  { name: '20K', value: (gold * 0.87 * 0.794) / 20 },
-  { name: '21K', value: (gold * 0.87 * 0.854) / 20 },
-  { name: '22K', value: (gold * 0.9 * 0.87) / 20 },
-  { name: '24K', value: (gold * 0.99 * 0.87) / 20 },
-  { name: 'American Coins | 1838 - 1933 (per coin)', value: gold * 0.96 * 0.95 - 50 },
-  { name: 'American Coins | 1986 - present', value: gold * 0.99 * 0.95 - 50 },
-  { name: 'Sterling', value: silver * 0.8 },
-  { name: 'Pure Silver', value: silver * 0.87 },
-  { name: 'Coin Silver', value: silver * 0.675 },
-  { name: '800 Silver', value: silver * 0.61 },
-  { name: 'Silver Dollar', value: silver * 0.77 },
-  { name: 'Silver Change ($1 face)', value: silver * 0.717 },
-  { name: 'Platinum', value: (platinum * 0.68) / 20 }
-];
-
 const spotPrices = [
   {
     key: 'gold',
@@ -142,24 +118,7 @@ export default function LivePrices() {
                   </div>
                 ))}
               </div>
-              {timestamp && (
-                <p className="text-sm text-slate-400 text-center mb-6 sm:mb-8">Current prices as of {timestamp}</p>
-              )}
-              <div className="rounded-2xl border border-slate-700/30 bg-slate-900/30 overflow-hidden">
-                {getCalculations(metals.gold, metals.silver, metals.platinum).map((calculation, index) => (
-                  <div
-                    key={calculation.name}
-                    className={`flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 ${
-                      index !== 0 ? 'border-t border-slate-700/20' : ''
-                    }`}
-                  >
-                    <span className="text-sm sm:text-base text-slate-300">{calculation.name}</span>
-                    <span className="text-sm sm:text-base font-mono font-semibold text-white">
-                      {formatCurrency.format(calculation.value)}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              {timestamp && <p className="text-sm text-slate-400 text-center">Current prices as of {timestamp}</p>}
             </>
           ) : null}
         </div>

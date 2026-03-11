@@ -1,14 +1,15 @@
-import { LogOut, Plus } from 'lucide-react';
+import { DollarSign, LogOut, Plus } from 'lucide-react';
 
 import Logo from '@/site/components/Logo';
 
 interface HeaderProps {
   ticketCount: number;
   onNewRepair: () => void;
+  onPricing: () => void;
   onSignOut: () => void;
 }
 
-export default function Header({ ticketCount, onNewRepair, onSignOut }: HeaderProps) {
+export default function Header({ ticketCount, onNewRepair, onPricing, onSignOut }: HeaderProps) {
   return (
     <header className="py-6 flex items-center justify-between gap-4">
       <div className="flex items-center gap-3 sm:gap-4 min-w-0">
@@ -18,6 +19,13 @@ export default function Header({ ticketCount, onNewRepair, onSignOut }: HeaderPr
         </p>
       </div>
       <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <button
+          className="inline-flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm font-medium text-yellow-400 border border-yellow-500/30 bg-yellow-500/10 hover:bg-yellow-500/20 hover:border-yellow-500/50 transition-all duration-200 active:scale-[0.97]"
+          onClick={onPricing}
+        >
+          <DollarSign className="w-4 h-4" />
+          <span className="hidden sm:inline">Buy Rates</span>
+        </button>
         <button
           className="group relative inline-flex items-center gap-2 font-semibold text-sm transition-all duration-300 active:scale-[0.97]"
           onClick={onNewRepair}

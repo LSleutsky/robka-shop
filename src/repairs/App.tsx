@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 import ConfirmModal from '@/repairs/components/ConfirmModal';
 import Header from '@/repairs/components/Header';
+import MetalsPricingModal from '@/repairs/components/MetalsPricingModal';
 import RepairModal from '@/repairs/components/RepairModal';
 import RepairTable from '@/repairs/components/RepairTable';
 import SearchBar from '@/repairs/components/SearchBar';
@@ -44,6 +45,7 @@ export default function App({ onSignOut }: AppProps) {
   const [itemsInput, setItemsInput] = useState('');
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [showSignOut, setShowSignOut] = useState(false);
+  const [showPricing, setShowPricing] = useState(false);
 
   const [confirmDelete, setConfirmDelete] = useState<{
     ids: number[];
@@ -263,7 +265,12 @@ export default function App({ onSignOut }: AppProps) {
         <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-500/20 to-transparent" />
       </div>
       <div className="relative max-w-400 mx-auto px-2 sm:px-4 lg:px-6">
-        <Header onNewRepair={openAdd} onSignOut={() => setShowSignOut(true)} ticketCount={repairs.length} />
+        <Header
+          onNewRepair={openAdd}
+          onPricing={() => setShowPricing(true)}
+          onSignOut={() => setShowSignOut(true)}
+          ticketCount={repairs.length}
+        />
         <StatsBar
           counts={counts}
           filterStatus={filterStatus}
@@ -330,6 +337,7 @@ export default function App({ onSignOut }: AppProps) {
           title="Confirm Deletion"
         />
       )}
+      {showPricing && <MetalsPricingModal onClose={() => setShowPricing(false)} />}
       {showSignOut && (
         <ConfirmModal
           confirmLabel="Log Out"
