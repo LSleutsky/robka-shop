@@ -1,6 +1,7 @@
 import { Copyright } from 'lucide-react';
 import { Link } from 'react-router';
 
+import GoogleIcon from '@/site/components/GoogleIcon';
 import InstagramIcon from '@/site/components/InstagramIcon';
 import Logo from '@/site/components/Logo';
 
@@ -52,15 +53,26 @@ export default function Footer() {
           </div>
           <div>
             <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Connect</h3>
-            <a
-              className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-white transition-colors duration-200"
-              href="https://instagram.com/robs.place"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <InstagramIcon className="size-4" />
-              @robs.place
-            </a>
+            <div className="space-y-2.5">
+              <a
+                className="flex items-center gap-2 text-sm text-slate-500 hover:text-white transition-colors duration-200"
+                href="https://instagram.com/robs.place"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <InstagramIcon className="size-4" />
+                @robs.place
+              </a>
+              <a
+                className="flex items-center gap-2 text-sm text-slate-500 hover:text-white transition-colors duration-200"
+                href="https://g.page/r/CddCfmuxLaylEBM/review"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <GoogleIcon className="size-4" />
+                Review Us
+              </a>
+            </div>
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-slate-800/60">

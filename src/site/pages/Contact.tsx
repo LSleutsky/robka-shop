@@ -2,6 +2,7 @@ import { clsx } from 'clsx';
 import { MapPin, Send } from 'lucide-react';
 import { ChangeEvent, SubmitEvent, useState } from 'react';
 
+import GoogleIcon from '@/site/components/GoogleIcon';
 import InstagramIcon from '@/site/components/InstagramIcon';
 
 import { inputBase } from '@/constants';
@@ -74,7 +75,7 @@ export default function Contact() {
       <section className="relative">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-8 pb-16 sm:pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-3 flex flex-col">
               {sent ? (
                 <div className="rounded-2xl border border-slate-700/30 bg-slate-900/30 p-8 sm:p-12 text-center">
                   <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-4">
@@ -98,7 +99,7 @@ export default function Contact() {
                 </div>
               ) : (
                 <form
-                  className="rounded-2xl border border-slate-700/30 bg-slate-900/30 p-6 sm:p-8"
+                  className="flex-1 flex flex-col rounded-2xl border border-slate-700/30 bg-slate-900/30 p-6 sm:p-8"
                   onSubmit={handleSubmit}
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
@@ -169,15 +170,15 @@ export default function Contact() {
                       />
                     </div>
                   </div>
-                  <div className="mt-4 sm:mt-5 space-y-1.5">
+                  <div className="mt-4 sm:mt-5 flex-1 flex flex-col gap-1.5">
                     <label
                       className="block text-xs font-semibold text-slate-400 uppercase tracking-wider"
                       htmlFor="message"
                     >
-                      Message *
+                      Message
                     </label>
                     <textarea
-                      className={clsx(inputBase, 'min-h-36 resize-y')}
+                      className={clsx(inputBase, 'flex-1 min-h-36 resize-y')}
                       id="message"
                       onChange={handleMessageChange}
                       placeholder="Tell us what you need..."
@@ -201,8 +202,8 @@ export default function Contact() {
                 </form>
               )}
             </div>
-            <div className="lg:col-span-2 space-y-4 sm:space-y-5">
-              <div className="rounded-2xl border border-slate-700/30 bg-slate-900/30 p-6 sm:p-7">
+            <div className="lg:col-span-2 flex flex-col gap-4 sm:gap-5">
+              <div className="flex-1 rounded-2xl border border-slate-700/30 bg-slate-900/30 p-6 sm:p-7">
                 <div className="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700/40 flex items-center justify-center mb-4">
                   <MapPin className="size-5 text-slate-400" />
                 </div>
@@ -213,7 +214,7 @@ export default function Contact() {
                   Lambertville, New Jersey
                 </p>
               </div>
-              <div className="rounded-2xl border border-slate-700/30 bg-slate-900/30 p-6 sm:p-7">
+              <div className="flex-1 rounded-2xl border border-slate-700/30 bg-slate-900/30 p-6 sm:p-7">
                 <div className="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700/40 flex items-center justify-center mb-4">
                   <InstagramIcon className="size-5 text-slate-400" />
                 </div>
@@ -225,6 +226,20 @@ export default function Contact() {
                   target="_blank"
                 >
                   @robs.place
+                </a>
+              </div>
+              <div className="flex-1 rounded-2xl border border-slate-700/30 bg-slate-900/30 p-6 sm:p-7">
+                <div className="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700/40 flex items-center justify-center mb-4">
+                  <GoogleIcon className="size-5 text-slate-400" />
+                </div>
+                <h3 className="text-base font-semibold text-white mb-1.5">Leave a Comment</h3>
+                <a
+                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                  href="https://g.page/r/CddCfmuxLaylEBM/review"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Review us on Google
                 </a>
               </div>
             </div>
