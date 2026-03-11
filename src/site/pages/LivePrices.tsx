@@ -79,9 +79,7 @@ export default function LivePrices() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-12 sm:pb-16">
           <div className="max-w-2xl">
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white font-mono">Live Prices</h1>
-            <p className="mt-4 sm:mt-6 text-lg text-slate-400 leading-relaxed">
-              Real-time precious metal spot prices and calculated buy rates.
-            </p>
+            <p className="mt-4 sm:mt-6 text-lg text-slate-400 leading-relaxed">Real-time precious metal spot prices</p>
           </div>
         </div>
       </section>
