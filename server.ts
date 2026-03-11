@@ -1,11 +1,19 @@
 import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
+import nodemailer from 'nodemailer';
 import path from 'path';
-import { Resend } from 'resend';
 
 const app = express();
 const PORT = Number.parseInt(process.env.PORT ?? '3000');
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD
+  }
+});
 
 app.use(compression());
 app.disable('x-powered-by');
@@ -22,30 +30,20 @@ app.post('/api/contact', async (req, res) => {
       return;
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    const { error } = await resend.emails.send({
-      from: 'Robka Shop <contact@robkashop.com>',
-      to: ['LushSleutsky@gmail.com'],
-      subject: subject ? `Contact Form: ${subject}` : 'CONTACT FORM SUBMISSION',
+    await transporter.sendMail({
+      from: email || `Robka Shop <jewelrydoctor@gmail.com>`,
+      to: process.env.GMAIL_USER,
+      replyTo: email,
+      subject: `Contact Form: ${subject}`,
       html: `
         <h2>Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-        ${subject ? `<p><strong>Subject:</strong> ${subject}</p>` : ''}
-        <h3>Message</h3>
-        <p>${message}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Subject:</strong> ${subject}</p>
+        ${message ? `<h3>Message</h3><p>${message}</p>` : ''}
       `
     });
-
-    if (error) {
-      console.error('Resend error:', error);
-
-      res.status(500).json({ error: 'Failed to send email' });
-
-      return;
-    }
 
     res.json({ success: true });
   } catch (error) {
