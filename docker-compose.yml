@@ -1,8 +1,12 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+        - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
     ports:
-      - '127.0.0.1:3001:3000'
+      - '127.0.0.1:3002:3000'
     environment:
       - NODE_ENV=production
       - RESEND_API_KEY=${RESEND_API_KEY}
