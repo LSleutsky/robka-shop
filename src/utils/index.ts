@@ -65,3 +65,8 @@ export const formatDate = (dateString: string): string => {
 
   return `${MONTHS[month - 1]} ${ordinal(day)}, ${String(year)}`;
 };
+
+export const formatCurrency = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+});

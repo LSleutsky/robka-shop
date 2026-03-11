@@ -11,4 +11,5 @@ services:
       - NODE_ENV=production
       - GMAIL_USER=${GMAIL_USER}
       - GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
+      - METALS_API_KEY=${METALS_API_KEY}
     restart: unless-stopped

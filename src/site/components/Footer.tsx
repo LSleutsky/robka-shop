@@ -38,6 +38,12 @@ export default function Footer() {
               </Link>
               <Link
                 className="block text-sm text-slate-500 hover:text-white transition-colors duration-200"
+                to="/live-prices"
+              >
+                Live Prices
+              </Link>
+              <Link
+                className="block text-sm text-slate-500 hover:text-white transition-colors duration-200"
                 to="/contact"
               >
                 Contact

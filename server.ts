@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
@@ -50,6 +52,22 @@ app.post('/api/contact', async (req, res) => {
     console.error(`Contact form error: ${error}`);
 
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/metals', async (_req, res) => {
+  try {
+    const response = await fetch(
+      `https://api.metals.dev/v1/latest?api_key=${process.env.METALS_API_KEY}&currency=USD&unit=toz`
+    );
+
+    const data = await response.json();
+
+    res.json(data);
+  } catch (error) {
+    console.error(`Metals API error: ${error}`);
+
+    res.status(500).json({ error: 'Failed to fetch metals prices' });
   }
 });
 
