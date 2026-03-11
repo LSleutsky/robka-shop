@@ -32,7 +32,7 @@ app.post('/api/contact', async (req, res) => {
 
     await transporter.sendMail({
       from: email || `Robka Shop <jewelrydoctor@gmail.com>`,
-      to: process.env.GMAIL_USER,
+      to: 'jewelrydoctor@gmail.com',
       replyTo: email,
       subject: `Contact Form: ${subject}`,
       html: `
