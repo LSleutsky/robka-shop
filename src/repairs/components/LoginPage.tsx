@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { Loader2, LogIn } from 'lucide-react';
+import { Eye, EyeOff, Loader2, LogIn } from 'lucide-react';
 import { SubmitEvent, useState } from 'react';
 
 import Logo from '@/site/components/Logo';
@@ -15,6 +15,7 @@ export default function LoginPage({ onSignIn }: LoginPageProps) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -70,15 +71,25 @@ export default function LoginPage({ onSignIn }: LoginPageProps) {
             <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider" htmlFor="password">
               Password
             </label>
-            <input
-              autoComplete="current-password"
-              className={inputBase}
-              id="password"
-              onChange={event => setPassword(event.target.value)}
-              placeholder="Enter your password"
-              type="password"
-              value={password}
-            />
+            <div className="relative">
+              <input
+                autoComplete="current-password"
+                className={clsx(inputBase, 'pr-10')}
+                id="password"
+                onChange={event => setPassword(event.target.value)}
+                placeholder="Enter your password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+              />
+              <button
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors duration-200"
+                onClick={() => setShowPassword(prev => !prev)}
+                tabIndex={-1}
+                type="button"
+              >
+                {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              </button>
+            </div>
           </div>
           {error && (
             <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">{error}</p>

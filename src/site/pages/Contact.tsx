@@ -17,11 +17,25 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  const canSubmit = name.trim() && email.trim() && phone.trim() && subject.trim() && !sending;
+  const errors = {
+    name: !name.trim() ? 'Name is required' : '',
+    email: !email.trim() ? 'Email is required' : '',
+    phone: !phone.trim() ? 'Phone number is required' : '',
+    message: !message.trim() ? 'Message is required' : ''
+  };
+
+  const hasErrors = Object.values(errors).some(Boolean);
 
   const handleSubmit = async (event: SubmitEvent) => {
     event.preventDefault();
+
+    setTouched({ name: true, email: true, phone: true, message: true });
+
+    if (hasErrors) {
+      return;
+    }
 
     setSending(true);
     setError('');
@@ -111,13 +125,20 @@ export default function Contact() {
                         Name *
                       </label>
                       <input
-                        className={inputBase}
+                        className={clsx(
+                          inputBase,
+                          touched.name &&
+                            errors.name &&
+                            'border-red-500/50 focus:border-red-500/60 focus:ring-red-500/20'
+                        )}
                         id="name"
+                        onBlur={() => setTouched(prevTouched => ({ ...prevTouched, name: true }))}
                         onChange={handleNameChange}
                         placeholder="Your name"
                         type="text"
                         value={name}
                       />
+                      {touched.name && errors.name && <p className="text-xs text-red-400">{errors.name}</p>}
                     </div>
                     <div className="space-y-1.5">
                       <label
@@ -127,13 +148,20 @@ export default function Contact() {
                         Email *
                       </label>
                       <input
-                        className={inputBase}
+                        className={clsx(
+                          inputBase,
+                          touched.email &&
+                            errors.email &&
+                            'border-red-500/50 focus:border-red-500/60 focus:ring-red-500/20'
+                        )}
                         id="email"
+                        onBlur={() => setTouched(prevTouched => ({ ...prevTouched, email: true }))}
                         onChange={event => setEmail(event.target.value)}
                         placeholder="your@email.com"
                         type="email"
                         value={email}
                       />
+                      {touched.email && errors.email && <p className="text-xs text-red-400">{errors.email}</p>}
                     </div>
                   </div>
                   <div className="mt-4 sm:mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
@@ -145,13 +173,20 @@ export default function Contact() {
                         Phone *
                       </label>
                       <input
-                        className={inputBase}
+                        className={clsx(
+                          inputBase,
+                          touched.phone &&
+                            errors.phone &&
+                            'border-red-500/50 focus:border-red-500/60 focus:ring-red-500/20'
+                        )}
                         id="phone"
+                        onBlur={() => setTouched(prevTouched => ({ ...prevTouched, phone: true }))}
                         onChange={handlePhoneChange}
                         placeholder="(555) 123-4567"
                         type="tel"
                         value={phone}
                       />
+                      {touched.phone && errors.phone && <p className="text-xs text-red-400">{errors.phone}</p>}
                     </div>
                     <div className="space-y-1.5">
                       <label
@@ -175,15 +210,23 @@ export default function Contact() {
                       className="block text-xs font-semibold text-slate-400 uppercase tracking-wider"
                       htmlFor="message"
                     >
-                      Message
+                      Message *
                     </label>
                     <textarea
-                      className={clsx(inputBase, 'flex-1 min-h-36 resize-y')}
+                      className={clsx(
+                        inputBase,
+                        'flex-1 min-h-36 resize-y',
+                        touched.message &&
+                          errors.message &&
+                          'border-red-500/50 focus:border-red-500/60 focus:ring-red-500/20'
+                      )}
                       id="message"
+                      onBlur={() => setTouched(prevTouched => ({ ...prevTouched, message: true }))}
                       onChange={handleMessageChange}
                       placeholder="Tell us what you need..."
                       value={message}
                     />
+                    {touched.message && errors.message && <p className="text-xs text-red-400">{errors.message}</p>}
                   </div>
                   {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
                   <button
@@ -193,7 +236,7 @@ export default function Contact() {
                       'shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 hover:brightness-110',
                       'disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-600 disabled:shadow-none'
                     )}
-                    disabled={!canSubmit}
+                    disabled={sending}
                     type="submit"
                   >
                     <Send className="w-4 h-4" />

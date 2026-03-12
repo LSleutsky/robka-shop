@@ -67,7 +67,7 @@ export default function Services() {
       <section className="relative">
         <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-500/20 to-transparent" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-12 sm:pb-16">
-          <div className="max-w-2xl">
+          <div className="max-w-3xl">
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white font-mono">Services</h1>
             <p className="mt-4 sm:mt-6 text-lg text-slate-400 leading-relaxed">
               All services available in various karats and colors of gold, platinum, and silver. 100% workmanship and

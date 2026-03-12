@@ -6,7 +6,7 @@ const milestones = [
     year: '1987',
     title: 'The Beginning',
     description:
-      "Started on Philadelphia's historic Jewelers Row, training under master goldsmiths from Russia, Ukraine, Italy, and Armenia in the art of bench work."
+      "Started on Philadelphia's historic Jeweler's Row, training under master goldsmiths from Russia, Ukraine, Italy, and Armenia in the art of bench work."
   },
   {
     icon: Award,
@@ -20,7 +20,7 @@ const milestones = [
     year: '2001',
     title: 'Golden Nugget',
     description:
-      'Established a comprehensive jewelry service within the Golden Nugget Antique Market in Lambertville, New Jersey - serving customers ever since.'
+      'Established a comprehensive jewelry service within the Golden Nugget Antique Market in Lambertville, New Jersey and have been serving customers ever since.'
   },
   {
     icon: Clock,
@@ -63,10 +63,10 @@ export default function About() {
               <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white font-mono mb-4">The Story</h2>
               <div className="space-y-4 text-sm sm:text-base text-slate-400 leading-relaxed">
                 <p>
-                  The journey began in 1987 on Philadelphia's renowned Jewelers Row, where the fundamentals of the craft
-                  were learned under the guidance of experienced goldsmiths from Russia, Ukraine, Italy, and Armenia.
-                  These master craftsmen instilled a deep understanding of bench work techniques that remains the
-                  foundation of every piece created today.
+                  The journey began in 1987 on Philadelphia's renowned Jeweler's Row, where the fundamentals of the
+                  craft were learned under the guidance of experienced goldsmiths from Russia, Ukraine, Italy, and
+                  Armenia. These master craftsmen instilled a deep understanding of bench work techniques that remains
+                  the foundation of every piece created today.
                 </p>
                 <p>
                   Since 2001, Robka Shop has operated a comprehensive jewelry service within the Golden Nugget Antique
@@ -77,6 +77,11 @@ export default function About() {
                   With valuable connections to esteemed dealers in diamonds, gemstones, high-end and vintage watches,
                   and other wholesale avenues, Robka Shop is able to source exceptional pieces and pass significant
                   savings on to customers.
+                </p>
+                <p>
+                  Every repair, custom design, and sale is handled with the same care and attention that was drilled in
+                  from day one. No shortcuts, no rushed work, just solid craftsmanship and straight talk. Customers come
+                  back because they know what they're getting, and they know they're not getting ripped off.
                 </p>
               </div>
             </div>
