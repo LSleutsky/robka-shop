@@ -26,17 +26,17 @@ app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, phone, subject, message } = req.body as Record<string, string>;
 
-    if (!name || !email || !phone || !subject) {
+    if (!name || !email || !phone || !message) {
       res.status(400).json({ error: 'Missing required fields' });
 
       return;
     }
 
     await transporter.sendMail({
-      from: email || `Robka Shop <jewelrydoctor@gmail.com>`,
+      from: `${name} <jewelrydoctor@gmail.com>`,
       to: 'jewelrydoctor@gmail.com',
       replyTo: email,
-      subject: `Contact Form: ${subject}`,
+      subject: subject ? `Contact Form: ${subject}` : 'Contact Form Submission',
       html: `
         <h2>Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>

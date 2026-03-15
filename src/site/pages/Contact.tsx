@@ -91,7 +91,7 @@ export default function Contact() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
             <div className="lg:col-span-3 flex flex-col">
               {sent ? (
-                <div className="rounded-2xl border border-slate-700/30 bg-slate-900/30 p-8 sm:p-12 text-center">
+                <div className="flex-1 rounded-2xl border border-slate-700/30 bg-slate-900/30 p-8 sm:p-12 text-center flex flex-col items-center justify-center">
                   <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-4">
                     <Send className="size-5 text-emerald-400" />
                   </div>
