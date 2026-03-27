@@ -109,7 +109,7 @@ export default function About() {
       </section>
       <section className="relative">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-16 sm:pb-24">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
             {stats.map(stat => (
               <div
                 key={stat.label}
