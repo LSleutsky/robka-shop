@@ -8,6 +8,8 @@ interface SessionResponse {
   user: { username: string } | null;
 }
 
+type RepairPayload = Omit<RepairForm, 'price'> & { price: number | null };
+
 const request = async <T>(url: string, init?: RequestInit): Promise<T> => {
   const response = await fetch(url, {
     credentials: 'same-origin',
@@ -36,10 +38,10 @@ export const logout = () => request<{ success: true }>('/api/auth/logout', { met
 
 export const fetchRepairs = () => request<Repair[]>('/api/repairs');
 
-export const createRepair = (payload: RepairForm) =>
+export const createRepair = (payload: RepairPayload) =>
   request<Repair>('/api/repairs', { method: 'POST', body: JSON.stringify(payload) });
 
-export const updateRepair = (id: number, payload: Partial<RepairForm>) =>
+export const updateRepair = (id: number, payload: Partial<RepairPayload>) =>
   request<Repair>(`/api/repairs/${String(id)}`, { method: 'PATCH', body: JSON.stringify(payload) });
 
 export const updateRepairStatus = (id: number, status: Status) =>

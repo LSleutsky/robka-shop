@@ -106,7 +106,8 @@ export default function RepairModal({
   onSave,
   onClose
 }: RepairModalProps) {
-  const canSave = form.ticket.trim() && form.customer.trim() && itemsInput.trim().length > 0 && !saving;
+  const canSave =
+    form.ticket.trim() && form.customer.trim() && itemsInput.trim().length > 0 && form.price.trim() && !saving;
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -205,6 +206,27 @@ export default function RepairModal({
               rows={3}
               value={form.specs}
             />
+          </Field>
+          <Field label="Price">
+            <div className="relative">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm font-medium pointer-events-none">
+                $
+              </span>
+              <input
+                className={clsx(inputBase, 'pl-7')}
+                inputMode="decimal"
+                onChange={event => {
+                  const value = event.target.value;
+
+                  if (value === '' || /^\d+\.?\d{0,2}$/.test(value)) {
+                    onFormChange({ price: value });
+                  }
+                }}
+                placeholder="0.00"
+                type="text"
+                value={form.price}
+              />
+            </div>
           </Field>
           <Field label="Status">
             <StatusSelect onChange={status => onFormChange({ status })} value={form.status} />

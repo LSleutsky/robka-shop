@@ -27,7 +27,8 @@ const EMPTY_FORM: RepairForm = {
   phone: '',
   items: [],
   specs: '',
-  status: 'Pending'
+  status: 'Pending',
+  price: ''
 };
 
 const capitalize = (value: string) => value.replace(/\b\w/g, char => char.toUpperCase());
@@ -81,7 +82,7 @@ export default function App({ onSignOut }: AppProps) {
 
     setSaving(true);
 
-    const payload = { ...form, items };
+    const payload = { ...form, items, price: form.price ? Number(form.price) : null };
 
     try {
       if (editingRepair) {
@@ -188,7 +189,8 @@ export default function App({ onSignOut }: AppProps) {
       phone: repair.phone ?? '',
       items: repair.items,
       specs: repair.specs ?? '',
-      status: repair.status
+      status: repair.status,
+      price: repair.price != null ? String(repair.price) : ''
     });
     setItemsInput(repair.items.join(', '));
     setShowModal(true);

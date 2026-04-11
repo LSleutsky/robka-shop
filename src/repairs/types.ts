@@ -11,6 +11,7 @@ export interface Repair {
   status: Status;
   picked_up_at: string | null;
   created_at: string;
+  price: number | null;
 }
 
 export interface RepairForm {
@@ -21,4 +22,5 @@ export interface RepairForm {
   items: string[];
   specs: string;
   status: Status;
+  price: string;
 }

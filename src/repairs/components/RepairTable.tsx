@@ -38,7 +38,7 @@ interface RepairTableProps {
 }
 
 const GRID_COLS =
-  'grid-cols-[3rem_minmax(5rem,1fr)_minmax(7.5rem,1.2fr)_minmax(6rem,1.5fr)_minmax(7rem,1.2fr)_minmax(6rem,2fr)_minmax(6rem,2fr)_minmax(8.5rem,1.2fr)] sm:grid-cols-[3rem_minmax(5rem,1fr)_minmax(7.5rem,1.2fr)_minmax(6rem,1.5fr)_minmax(7rem,1.2fr)_minmax(6rem,2fr)_minmax(6rem,2fr)_minmax(8.5rem,1.2fr)_5.5rem]';
+  'grid-cols-[3rem_minmax(5rem,1fr)_minmax(7.5rem,1.2fr)_minmax(6rem,1.5fr)_minmax(7rem,1.2fr)_minmax(6rem,2fr)_minmax(6rem,2fr)_minmax(5rem,0.8fr)_minmax(8.5rem,1.2fr)] sm:grid-cols-[3rem_minmax(5rem,1fr)_minmax(7.5rem,1.2fr)_minmax(6rem,1.5fr)_minmax(7rem,1.2fr)_minmax(6rem,2fr)_minmax(6rem,2fr)_minmax(5rem,0.8fr)_minmax(8.5rem,1.2fr)_5.5rem]';
 
 const CELL = 'px-3 sm:px-4 py-3 sm:py-3.5 flex items-center justify-center text-center text-sm';
 const CELL_FIRST = 'px-2 py-3.5 flex items-center justify-center sticky left-0 z-10';
@@ -56,6 +56,7 @@ const HEADERS = [
   { label: 'Phone', className: CELL },
   { label: 'Items', className: CELL },
   { label: 'Specs', className: CELL },
+  { label: 'Price', className: CELL },
   { label: 'Status', className: CELL }
 ];
 
@@ -184,6 +185,9 @@ export default function RepairTable({
                     <div className={`${CELL} ${rowBase} text-slate-300`}>{repair.items.join(', ')}</div>
                     <div className={`${CELL} ${rowBase} text-slate-500 pr-6`}>
                       {repair.specs ?? <span className="text-slate-700">—</span>}
+                    </div>
+                    <div className={`${CELL} ${rowBase} text-slate-300 font-mono text-xs whitespace-nowrap`}>
+                      {repair.price != null ? `$${repair.price.toFixed(2)}` : <span className="text-slate-700">—</span>}
                     </div>
                     <div className={`${CELL} ${rowBase} whitespace-nowrap`}>
                       <StatusBadge
