@@ -1,34 +1,38 @@
 import { useEffect, useState } from 'react';
-import { Session } from '@supabase/supabase-js';
 
-import { supabase } from '@/repairs/lib/supabase';
+import { getSession, login, logout } from '@/repairs/lib/api';
+
+interface User {
+  username: string;
+}
 
 export default function useAuth() {
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    void supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setLoading(false);
-    });
-
-    const {
-      data: { subscription }
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
+    getSession()
+      .then(data => setUser(data.user))
+      .catch(() => setUser(null))
+      .finally(() => setLoading(false));
   }, []);
 
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const signIn = async (username: string, password: string) => {
+    try {
+      const data = await login(username, password);
 
-    return error;
+      setUser(data.user);
+
+      return null;
+    } catch (error) {
+      return { message: error instanceof Error ? error.message : 'Sign in failed' };
+    }
   };
 
-  const signOut = async () => await supabase.auth.signOut();
+  const signOut = async () => {
+    await logout();
+    setUser(null);
+  };
 
-  return { session, loading, signIn, signOut };
+  return { user, loading, signIn, signOut };
 }

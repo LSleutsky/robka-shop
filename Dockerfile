@@ -5,8 +5,6 @@ RUN npm ci
 
 FROM node:20-alpine AS build
 WORKDIR /app
-ARG VITE_SUPABASE_URL
-ARG VITE_SUPABASE_ANON_KEY
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 RUN npm run build

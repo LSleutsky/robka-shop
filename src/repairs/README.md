@@ -1,6 +1,6 @@
 # Repair Tracker
 
-A repair tracking app for managing customer repair tickets. Built with React, Supabase, and Tailwind CSS.
+A repair tracking app for managing customer repair tickets. Built with React, Postgres, and Tailwind CSS.
 
 ## Authentication
 

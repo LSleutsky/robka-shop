@@ -7,7 +7,7 @@ import Logo from '@/site/components/Logo';
 import { inputBase } from '@/constants';
 
 interface LoginPageProps {
-  onSignIn: (email: string, password: string) => Promise<{ message: string } | null>;
+  onSignIn: (username: string, password: string) => Promise<{ message: string } | null>;
 }
 
 export default function LoginPage({ onSignIn }: LoginPageProps) {
@@ -23,9 +23,7 @@ export default function LoginPage({ onSignIn }: LoginPageProps) {
     setError('');
     setLoading(true);
 
-    // TODO: if this ever becomes expanded to multiple users, this will need to be updated to actually look up the email based on the username instead of just appending `@gmail.com`
-    const email = `${username.trim().toLowerCase()}@gmail.com`;
-    const result = await onSignIn(email, password);
+    const result = await onSignIn(username.trim().toLowerCase(), password);
 
     if (result) {
       setError('Invalid username or password.');

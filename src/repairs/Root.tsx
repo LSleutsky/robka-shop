@@ -6,7 +6,7 @@ import LoginPage from '@/repairs/components/LoginPage';
 import useAuth from '@/repairs/hooks/useAuth';
 
 export default function Root() {
-  const { session, loading, signIn, signOut } = useAuth();
+  const { user, loading, signIn, signOut } = useAuth();
 
   if (loading) {
     return (
@@ -16,7 +16,7 @@ export default function Root() {
     );
   }
 
-  if (!session) {
+  if (!user) {
     return <LoginPage onSignIn={signIn} />;
   }
 

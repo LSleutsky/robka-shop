@@ -2,14 +2,22 @@ services:
   app:
     build:
       context: .
-      args:
-        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
-        - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
     ports:
       - '127.0.0.1:3002:3000'
     environment:
       - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - GMAIL_USER=${GMAIL_USER}
       - GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
       - METALS_API_KEY=${METALS_API_KEY}
+    networks:
+      - postgres
     restart: unless-stopped
+
+networks:
+  postgres:
+    external: true
+    name: postgres_default

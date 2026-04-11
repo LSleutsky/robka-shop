@@ -10,8 +10,8 @@ import SearchBar from '@/repairs/components/SearchBar';
 import StatsBar from '@/repairs/components/StatsBar';
 
 import { STATUSES } from '@/repairs/config/statuses';
+import * as api from '@/repairs/lib/api';
 import { exportRepairs } from '@/repairs/lib/exportRepairs';
-import { supabase } from '@/repairs/lib/supabase';
 import { Repair, RepairForm, Status } from '@/repairs/types';
 
 interface AppProps {
@@ -58,12 +58,12 @@ export default function App({ onSignOut }: AppProps) {
     setLoading(true);
     setError(null);
 
-    const { data, error } = await supabase.from('repairs').select('*').order('id', { ascending: false });
+    try {
+      const data = await api.fetchRepairs();
 
-    if (error) {
-      setError('Failed to load repairs. Check your Supabase connection.');
-    } else {
-      setRepairs(data as Repair[]);
+      setRepairs(data);
+    } catch {
+      setError('Failed to load repairs. Check your database connection.');
     }
 
     setLoading(false);
@@ -83,20 +83,18 @@ export default function App({ onSignOut }: AppProps) {
 
     const payload = { ...form, items };
 
-    if (editingRepair) {
-      const { error } = await supabase.from('repairs').update(payload).eq('id', editingRepair.id);
+    try {
+      if (editingRepair) {
+        const updated = await api.updateRepair(editingRepair.id, payload);
 
-      if (!error) {
-        setRepairs(prevRepair =>
-          prevRepair.map(repair => (repair.id === editingRepair.id ? { ...repair, ...payload } : repair))
-        );
-      }
-    } else {
-      const { data, error } = await supabase.from('repairs').insert([payload]).select();
+        setRepairs(prevRepair => prevRepair.map(repair => (repair.id === editingRepair.id ? updated : repair)));
+      } else {
+        const created = await api.createRepair(payload);
 
-      if (!error && data.length) {
-        setRepairs(prevRepair => [data[0] as Repair, ...prevRepair]);
+        setRepairs(prevRepair => [created, ...prevRepair]);
       }
+    } catch {
+      setError('Failed to save repair. Please try again.');
     }
 
     setSaving(false);
@@ -104,10 +102,12 @@ export default function App({ onSignOut }: AppProps) {
   };
 
   const updateStatus = async (id: number, status: Status) => {
-    const { error } = await supabase.from('repairs').update({ status }).eq('id', id);
+    try {
+      const updated = await api.updateRepairStatus(id, status);
 
-    if (!error) {
-      setRepairs(prevRepair => prevRepair.map(repair => (repair.id === id ? { ...repair, status } : repair)));
+      setRepairs(prevRepair => prevRepair.map(repair => (repair.id === id ? updated : repair)));
+    } catch {
+      setError('Failed to update status. Please try again.');
     }
   };
 
@@ -118,11 +118,9 @@ export default function App({ onSignOut }: AppProps) {
       return;
     }
 
-    const { error: deleteError } = await supabase.from('repairs').delete().in('id', ids);
+    try {
+      await api.deleteRepairs(ids);
 
-    if (deleteError) {
-      setError('Failed to delete repairs. Please try again.');
-    } else {
       const idSet = new Set(ids);
 
       setRepairs(prevRepairs => prevRepairs.filter(repair => !idSet.has(repair.id)));
@@ -135,6 +133,8 @@ export default function App({ onSignOut }: AppProps) {
 
         return next;
       });
+    } catch {
+      setError('Failed to delete repairs. Please try again.');
     }
 
     setConfirmDelete(null);
